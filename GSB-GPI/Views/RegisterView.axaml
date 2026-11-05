@@ -1,0 +1,244 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="using:GSB_GPI.ViewModels"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="GSB_GPI.Views.RegisterView"
+        x:DataType="vm:RegisterViewModel"
+        Width="1100" Height="700"
+        MinWidth="900" MinHeight="650"
+        WindowStartupLocation="CenterScreen"
+        Background="White"
+        Title="GSB-GPI - Inscription">
+
+    <Design.DataContext>
+        <vm:RegisterViewModel/>
+    </Design.DataContext>
+
+    <Window.Styles>
+        <Style Selector="TextBlock.heading">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Margin" Value="0,0,0,4"/>
+        </Style>
+
+        <Style Selector="TextBlock.body">
+            <Setter Property="Foreground" Value="#F2F5FB"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="LineHeight" Value="19"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+        </Style>
+
+        <Style Selector="TextBlock.label">
+            <Setter Property="Foreground" Value="#1F1F1F"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Margin" Value="0,0,0,6"/>
+        </Style>
+
+        <Style Selector="TextBox.field">
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="MinHeight" Value="38"/>
+            <Setter Property="Padding" Value="12,0"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="Foreground" Value="#1F1F1F"/>
+            <Setter Property="CornerRadius" Value="6"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#C8C8C8"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style Selector="TextBox.field /template/ TextBlock#PART_Watermark">
+            <Setter Property="Opacity" Value="1"/>
+            <Setter Property="Foreground" Value="#767676"/>
+            <Setter Property="FontWeight" Value="Normal"/>
+        </Style>
+
+        <Style Selector="ComboBox.field">
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="MinHeight" Value="38"/>
+            <Setter Property="Padding" Value="12,0"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="Foreground" Value="#1F1F1F"/>
+            <Setter Property="PlaceholderForeground" Value="#767676"/>
+            <Setter Property="CornerRadius" Value="6"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#C8C8C8"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style Selector="Button.primary">
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="CornerRadius" Value="6"/>
+            <Setter Property="Background" Value="#2B2B2B"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style Selector="Button.primary:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#444444"/>
+            <Setter Property="TextElement.Foreground" Value="White"/>
+        </Style>
+
+        <Style Selector="Button.link">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#1F1F1F"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+        </Style>
+
+        <Style Selector="Button.link:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="TextElement.Foreground" Value="#1F3763"/>
+        </Style>
+    </Window.Styles>
+
+    <Grid ColumnDefinitions="*,*">
+
+        <Grid Grid.Column="0" Background="#1F3763" RowDefinitions="*,Auto">
+            <StackPanel Grid.Row="0" Margin="40,50,40,0" Spacing="18">
+                <StackPanel Spacing="4" Margin="0,0,0,10">
+                    <TextBlock Text="GSB GPI"
+                               Foreground="White"
+                               FontSize="42"
+                               FontWeight="Bold"/>
+                    <TextBlock Text="Outil de gestion de parc informatique"
+                               Foreground="#DCE3F1"
+                               FontSize="18"
+                               FontWeight="Normal"/>
+                </StackPanel>
+
+                <StackPanel>
+                    <TextBlock Classes="heading" Text="Présentation du Projet"/>
+                    <TextBlock Classes="body"
+                               Text="Cette application de bureau a été conçue en mode projet par des étudiants en BTS SIO afin de répondre aux besoins opérationnels du laboratoire Galaxy Swiss Bourdin (GSB)."/>
+                </StackPanel>
+
+                <StackPanel>
+                    <TextBlock Classes="heading" Text="Contexte &amp; Enjeux"/>
+                    <TextBlock Classes="body"
+                               Text="Né de la fusion entre le groupe américain Galaxy et le laboratoire européen Swiss Bourdin, le laboratoire GSB compte plus de 500 collaborateurs répartis en métropole et outre-mer. Avec un parc informatique vaste et hétérogène de plus de 350 postes, des tablettes et du matériel sous location, l'entreprise nécessitait une solution centralisée pour optimiser l'inventaire et accélérer la résolution des incidents."/>
+                </StackPanel>
+
+                <StackPanel>
+                    <TextBlock Classes="heading" Text="Objectifs &amp; Stack Technique"/>
+                    <TextBlock Classes="body"
+                               Text="Développée avec C# et Avalonia UI selon l'architecture MVVM, l'application s'appuie sur une base de données MySQL pour assurer le suivi précis des tickets selon le niveau d'habilitation des techniciens et des responsables."/>
+                </StackPanel>
+
+                <StackPanel>
+                    <TextBlock Classes="heading" Text="Équipe de Développement"/>
+                    <TextBlock Classes="body"
+                               Text="Logiciel développé par Nills Maillet, Karar Ali-hassan et Mattéo Dauriac."/>
+                </StackPanel>
+            </StackPanel>
+
+            <TextBlock Grid.Row="1"
+                       Text="©2026"
+                       Foreground="#DCE3F1"
+                       FontSize="12"
+                       FontWeight="Medium"
+                       Margin="40,0,40,30"/>
+        </Grid>
+
+        <Grid Grid.Column="1" Background="White">
+            <StackPanel MaxWidth="420"
+                        Margin="32,0"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Center">
+
+                <TextBlock Text="S’inscrire"
+                           Foreground="#1F1F1F"
+                           FontSize="42"
+                           FontWeight="Bold"/>
+                <TextBlock Text="Signaler, contribuer et résoudre"
+                           Foreground="#6B6B6B"
+                           FontSize="18"
+                           FontWeight="Normal"
+                           Margin="0,4,0,0"/>
+
+                <Border Margin="0,40,0,0"
+                        Padding="24"
+                        Background="White"
+                        BorderBrush="#DDDDDD"
+                        BorderThickness="1"
+                        CornerRadius="8">
+                    <StackPanel Spacing="16">
+
+                        <StackPanel>
+                            <TextBlock Classes="label" Text="Email"/>
+                            <TextBox Classes="field"
+                                     Watermark="Entrez votre adresse mail"
+                                     Text="{Binding Email}"/>
+                        </StackPanel>
+
+                        <StackPanel>
+                            <TextBlock Classes="label" Text="Rôle"/>
+                            <ComboBox Classes="field"
+                                      PlaceholderText="Choisissez un rôle"
+                                      ItemsSource="{Binding Roles}"
+                                      SelectedItem="{Binding SelectedRole}"/>
+                        </StackPanel>
+
+                        <StackPanel>
+                            <TextBlock Classes="label" Text="Mot de passe"/>
+                            <TextBox Classes="field"
+                                     Watermark="Entrez votre mot de passe"
+                                     PasswordChar="●"
+                                     Text="{Binding Password}"/>
+                        </StackPanel>
+
+                        <StackPanel>
+                            <TextBlock Classes="label" Text="Confirmez votre mot de passe"/>
+                            <TextBox Classes="field"
+                                     Watermark="Confirmez votre mot de passe"
+                                     PasswordChar="●"
+                                     Text="{Binding ConfirmPassword}"/>
+                        </StackPanel>
+
+                        <Button Classes="primary"
+                                Command="{Binding RegisterCommand}">
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <TextBlock Text="&gt;_"
+                                           FontFamily="Consolas, Menlo, monospace"
+                                           FontWeight="Bold"
+                                           VerticalAlignment="Center"/>
+                                <TextBlock Text="S’inscrire"
+                                           VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+
+                        <StackPanel Orientation="Horizontal"
+                                    HorizontalAlignment="Center"
+                                    Spacing="20">
+                            <Button Classes="link"
+                                    Command="{Binding GoToLoginCommand}">
+                                <TextBlock Text="Déjà un compte ?"
+                                           TextDecorations="Underline"/>
+                            </Button>
+                            <Button Classes="link"
+                                    Command="{Binding GoToLoginCommand}">
+                                <TextBlock Text="Se connecter"
+                                           TextDecorations="Underline"/>
+                            </Button>
+                        </StackPanel>
+
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>

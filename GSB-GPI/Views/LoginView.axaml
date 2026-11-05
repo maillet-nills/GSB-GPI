@@ -11,7 +11,7 @@
         WindowStartupLocation="CenterScreen"
         Background="White"
         Title="GSB-GPI - Connexion">
-    
+
     <Design.DataContext>
         <vm:LoginViewModel/>
     </Design.DataContext>
@@ -19,42 +19,53 @@
     <Window.Styles>
         <Style Selector="TextBlock.heading">
             <Setter Property="Foreground" Value="White"/>
-            <Setter Property="FontSize" Value="13"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="Margin" Value="0,0,0,4"/>
         </Style>
 
         <Style Selector="TextBlock.body">
-            <Setter Property="Foreground" Value="#E6EBF5"/>
-            <Setter Property="FontSize" Value="12"/>
-            <Setter Property="LineHeight" Value="17"/>
+            <Setter Property="Foreground" Value="#F2F5FB"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="LineHeight" Value="19"/>
             <Setter Property="TextWrapping" Value="Wrap"/>
         </Style>
 
         <Style Selector="TextBlock.label">
-            <Setter Property="Foreground" Value="#2B2B2B"/>
-            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Foreground" Value="#1F1F1F"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="Margin" Value="0,0,0,6"/>
         </Style>
 
         <Style Selector="TextBox.field">
-            <Setter Property="Height" Value="36"/>
-            <Setter Property="MinHeight" Value="36"/>
-            <Setter Property="Padding" Value="10,0"/>
-            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="MinHeight" Value="38"/>
+            <Setter Property="Padding" Value="12,0"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="Foreground" Value="#1F1F1F"/>
             <Setter Property="CornerRadius" Value="6"/>
             <Setter Property="Background" Value="White"/>
-            <Setter Property="BorderBrush" Value="#E2E2E2"/>
+            <Setter Property="BorderBrush" Value="#C8C8C8"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
         </Style>
 
+        <Style Selector="TextBox.field /template/ TextBlock#PART_Watermark">
+            <Setter Property="Opacity" Value="1"/>
+            <Setter Property="Foreground" Value="#767676"/>
+            <Setter Property="FontWeight" Value="Normal"/>
+        </Style>
+
         <Style Selector="Button.primary">
-            <Setter Property="Height" Value="38"/>
+            <Setter Property="Height" Value="40"/>
             <Setter Property="CornerRadius" Value="6"/>
             <Setter Property="Background" Value="#2B2B2B"/>
             <Setter Property="Foreground" Value="White"/>
-            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="HorizontalAlignment" Value="Stretch"/>
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
@@ -67,9 +78,10 @@
 
         <Style Selector="Button.link">
             <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Foreground" Value="#2B2B2B"/>
+            <Setter Property="Foreground" Value="#1F1F1F"/>
             <Setter Property="Padding" Value="0"/>
-            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="Medium"/>
         </Style>
 
         <Style Selector="Button.link:pointerover /template/ ContentPresenter">
@@ -88,9 +100,9 @@
                                FontSize="42"
                                FontWeight="Bold"/>
                     <TextBlock Text="Outil de gestion de parc informatique"
-                               Foreground="#C5CFE3"
+                               Foreground="#DCE3F1"
                                FontSize="18"
-                               FontWeight="Light"/>
+                               FontWeight="Normal"/>
                 </StackPanel>
 
                 <StackPanel>
@@ -114,36 +126,38 @@
                 <StackPanel>
                     <TextBlock Classes="heading" Text="Équipe de Développement"/>
                     <TextBlock Classes="body"
-                               Text="Logiciel développé par Nills Maillet, Karar A et Spiralyfox."/>
+                               Text="Logiciel développé par Nills Maillet, Karar Ali-hassan et Mattéo Dauriac."/>
                 </StackPanel>
             </StackPanel>
 
             <TextBlock Grid.Row="1"
                        Text="©2026"
-                       Foreground="#E6EBF5"
+                       Foreground="#DCE3F1"
                        FontSize="12"
+                       FontWeight="Medium"
                        Margin="40,0,40,30"/>
         </Grid>
 
         <Grid Grid.Column="1" Background="White">
-            <StackPanel Width="420"
-                        HorizontalAlignment="Center"
+            <StackPanel MaxWidth="420"
+                        Margin="32,0"
+                        HorizontalAlignment="Stretch"
                         VerticalAlignment="Center">
 
                 <TextBlock Text="Se connecter"
-                           Foreground="#2B2B2B"
+                           Foreground="#1F1F1F"
                            FontSize="42"
                            FontWeight="Bold"/>
                 <TextBlock Text="Signaler, contribuer et résoudre"
-                           Foreground="#A8A8A8"
+                           Foreground="#6B6B6B"
                            FontSize="18"
-                           FontWeight="Light"
+                           FontWeight="Normal"
                            Margin="0,4,0,0"/>
 
                 <Border Margin="0,50,0,0"
                         Padding="24"
                         Background="White"
-                        BorderBrush="#E5E5E5"
+                        BorderBrush="#DDDDDD"
                         BorderThickness="1"
                         CornerRadius="8">
                     <StackPanel Spacing="18">
