@@ -26,5 +26,8 @@ build_property.EnableCodeStyleSeverity =
 [/home/Nwt/Code Projects/C\#/AvaloniaUI/GSB-GPI/GSB-GPI/App.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
+[/home/Nwt/Code Projects/C\#/AvaloniaUI/GSB-GPI/GSB-GPI/Views/LoginView.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
 [/home/Nwt/Code Projects/C\#/AvaloniaUI/GSB-GPI/GSB-GPI/Views/MainWindow.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
