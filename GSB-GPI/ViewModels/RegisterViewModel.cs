@@ -23,7 +23,7 @@ public partial class RegisterViewModel : ViewModelBase
 
     public ObservableCollection<string> Roles { get; } = new ObservableCollection<string>
     {
-        "Employé",
+        "Client",
         "Technicien N1",
         "Technicien N1.5",
         "Technicien N2",

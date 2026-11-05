@@ -1,9 +1,13 @@
+using System;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+
 namespace GSB_GPI.ViewModels;
 
 public partial class LoginViewModel : ViewModelBase
 {
+    public event Action? RegisterRequested;
+
     [ObservableProperty]
     private string _email = string.Empty;
 
@@ -18,6 +22,7 @@ public partial class LoginViewModel : ViewModelBase
     [RelayCommand]
     private void CreateAccount()
     {
+        RegisterRequested?.Invoke();
     }
 
     [RelayCommand]

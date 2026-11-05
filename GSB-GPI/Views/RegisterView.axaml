@@ -1,4 +1,4 @@
-<Window xmlns="https://github.com/avaloniaui"
+<UserControl xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -8,15 +8,13 @@
         x:DataType="vm:RegisterViewModel"
         Width="1100" Height="700"
         MinWidth="900" MinHeight="650"
-        WindowStartupLocation="CenterScreen"
-        Background="White"
-        Title="GSB-GPI - Inscription">
+        Background="White">
 
     <Design.DataContext>
         <vm:RegisterViewModel/>
     </Design.DataContext>
 
-    <Window.Styles>
+    <UserControl.Styles>
         <Style Selector="TextBlock.heading">
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="FontSize" Value="14"/>
@@ -104,7 +102,7 @@
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="TextElement.Foreground" Value="#1F3763"/>
         </Style>
-    </Window.Styles>
+    </UserControl.Styles>
 
     <Grid ColumnDefinitions="*,*">
 
@@ -241,4 +239,4 @@
             </StackPanel>
         </Grid>
     </Grid>
-</Window>
+</UserControl>
