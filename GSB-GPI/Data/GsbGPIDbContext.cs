@@ -19,6 +19,7 @@ public class GsbGPIDbContext : DbContext
 	public DbSet<Technician> Technicians  { get; set; }
 
 	public DbSet<Ticket> Tickets { get; set; }
+	public DbSet<Log> Logs { get; set; }
 
 	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 	{
@@ -37,12 +38,20 @@ public class GsbGPIDbContext : DbContext
 
 	//Methods
 
+	public void AddLog(string type, string message)
+	{
+		var newLog = new Log(type, message);
+		Logs.Add(newLog);
+		SaveChanges();
+	}
+
 	public bool Register(string lastName, string firstName, string email, string password, string confirmPassword, string role)
 	{
 		bool exists = Users.Any(u => u.Email == email);
 
 		if (exists)
 		{
+			AddLog("WARNING", $"Tentative de Register, utilisateur déjà existant : {email}");
 			//Ajout d'une alternative au MessageBox en cas de fail ? (Utilisateur déjà existant !)
 			return false;
 		}
@@ -84,6 +93,7 @@ public class GsbGPIDbContext : DbContext
 				FirstName = firstName
 
 			};
+			AddLog("INFO", $"Nouvel utilisateur Technicien créé : {email}");
 			Users.Add(newTechnician);
 		}
 
@@ -98,6 +108,7 @@ public class GsbGPIDbContext : DbContext
 				FirstName = "Inconnu"
 
 			};
+			AddLog("INFO", $"Nouvel utilisateur créé : {email}");
 			Users.Add(newUser);
 		}
 
@@ -112,11 +123,20 @@ public class GsbGPIDbContext : DbContext
 
 		if (user == null)
 		{
+			AddLog("WARNING", $"Tentative de Login échoué, utilisateur non existant : {email}");
 			//Ajout d'une alternative au MessageBox en cas de fail ? (Utilisateur innexistant !)
 			return false;
 		}
 
 		bool isPasswordValid = BCrypt.Net.BCrypt.Verify(password, user.HashedPassword);
+		if (isPasswordValid)
+		{
+			AddLog("INFO", $"Login réussi, utilisateur : {email}");
+		}
+		else
+		{
+			AddLog("WARNING", "Tentative de Login échoué, mauvais mot de passe : {email}");
+		}
 
 		return isPasswordValid;
 	}
