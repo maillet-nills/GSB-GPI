@@ -1,0 +1,144 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:GSB_GPI.ViewModels"
+             xmlns:views="using:GSB_GPI.Views"
+             xmlns:i="https://github.com/projektanker/icons.avalonia"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="GSB_GPI.Views.ShellView"
+             x:DataType="vm:ShellViewModel"
+             Background="White">
+
+    <Design.DataContext>
+        <vm:ShellViewModel/>
+    </Design.DataContext>
+
+    <UserControl.DataTemplates>
+        <DataTemplate DataType="vm:DashboardViewModel">
+            <views:DashboardView/>
+        </DataTemplate>
+        <DataTemplate DataType="vm:InventoryViewModel">
+            <views:InventoryView/>
+        </DataTemplate>
+        <DataTemplate DataType="vm:TicketViewModel">
+            <views:TicketView/>
+        </DataTemplate>
+    </UserControl.DataTemplates>
+
+    <UserControl.Styles>
+        <Style Selector="Button.nav">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="14,10"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        </Style>
+
+        <Style Selector="Button.nav:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#1FFFFFFF"/>
+            <Setter Property="TextElement.Foreground" Value="White"/>
+        </Style>
+
+        <Style Selector="Button.nav:pressed /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#2EFFFFFF"/>
+            <Setter Property="TextElement.Foreground" Value="White"/>
+        </Style>
+
+        <Style Selector="Button.nav.active /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#33FFFFFF"/>
+            <Setter Property="TextElement.Foreground" Value="White"/>
+        </Style>
+    </UserControl.Styles>
+
+    <Grid ColumnDefinitions="230,*">
+
+        <Grid Grid.Column="0" Background="#1F3763" RowDefinitions="Auto,*,Auto,Auto">
+
+            <TextBlock Grid.Row="0"
+                       Text="GSB GPI"
+                       Foreground="White"
+                       FontSize="22"
+                       FontWeight="Bold"
+                       FontStyle="Italic"
+                       HorizontalAlignment="Center"
+                       Margin="0,36,0,36"/>
+
+            <StackPanel Grid.Row="1" Margin="12,0" Spacing="4">
+                <Button Classes="nav"
+                        Classes.active="{Binding IsDashboardActive}"
+                        Command="{Binding ShowDashboardCommand}">
+                    <Grid ColumnDefinitions="26,*">
+                        <i:Icon Value="fa-regular fa-clock"
+                                FontSize="14"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"/>
+                        <TextBlock Grid.Column="1"
+                                   Text="Tableau de bord"
+                                   VerticalAlignment="Center"/>
+                    </Grid>
+                </Button>
+
+                <Button Classes="nav"
+                        Classes.active="{Binding IsInventoryActive}"
+                        Command="{Binding ShowInventoryCommand}">
+                    <Grid ColumnDefinitions="26,*">
+                        <i:Icon Value="fa-solid fa-cube"
+                                FontSize="14"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"/>
+                        <TextBlock Grid.Column="1"
+                                   Text="Inventaire"
+                                   VerticalAlignment="Center"/>
+                    </Grid>
+                </Button>
+
+                <Button Classes="nav"
+                        Classes.active="{Binding IsIncidentsActive}"
+                        Command="{Binding ShowTicketCommand}">
+                    <Grid ColumnDefinitions="26,*">
+                        <i:Icon Value="fa-regular fa-clipboard"
+                                FontSize="14"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"/>
+                        <TextBlock Grid.Column="1"
+                                   Text="Incidents"
+                                   VerticalAlignment="Center"/>
+                    </Grid>
+                </Button>
+            </StackPanel>
+
+            <Button Grid.Row="2"
+                    Classes="nav"
+                    Margin="12,0"
+                    Command="{Binding LogoutCommand}">
+                <Grid ColumnDefinitions="26,*">
+                    <i:Icon Value="fa-solid fa-right-from-bracket"
+                            FontSize="14"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"/>
+                    <TextBlock Grid.Column="1"
+                               Text="Se déconnecter"
+                               VerticalAlignment="Center"/>
+                </Grid>
+            </Button>
+
+            <TextBlock Grid.Row="3"
+                       Text="©2026"
+                       Foreground="#DCE3F1"
+                       FontSize="12"
+                       FontWeight="Medium"
+                       Margin="26,20,26,24"/>
+        </Grid>
+
+        <TransitioningContentControl Grid.Column="1"
+                                     Content="{Binding CurrentPage}">
+            <TransitioningContentControl.PageTransition>
+                <CrossFade Duration="0:00:00.150"/>
+            </TransitioningContentControl.PageTransition>
+        </TransitioningContentControl>
+    </Grid>
+</UserControl>

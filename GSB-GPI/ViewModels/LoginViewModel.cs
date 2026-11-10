@@ -8,6 +8,7 @@ namespace GSB_GPI.ViewModels;
 public partial class LoginViewModel : ViewModelBase
 {
     public event Action? RegisterRequested;
+    public event Action? LoginSuceeded;
 
     [ObservableProperty]
     private string _email = string.Empty;
@@ -21,12 +22,10 @@ public partial class LoginViewModel : ViewModelBase
     {
 	    using (var context = new GsbGPIDbContext())
 	    {
-		    bool success = context.Login(Email, Password);
 
-		    if (success)
+		    if (context.Login(Email, Password))
 		    {
-			    //RegisterRequested?.Invoke(); Test
-			   //Dashboard
+			    LoginSuceeded?.Invoke();
 		    }
 
 		    else

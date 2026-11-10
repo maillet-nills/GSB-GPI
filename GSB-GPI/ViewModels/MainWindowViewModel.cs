@@ -16,6 +16,7 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         LoginViewModel loginViewModel = new LoginViewModel();
         loginViewModel.RegisterRequested += ShowRegister;
+        loginViewModel.LoginSuceeded += ShowShell;
         CurrentViewModel = loginViewModel;
     }
 
@@ -24,6 +25,13 @@ public partial class MainWindowViewModel : ViewModelBase
         RegisterViewModel registerViewModel = new RegisterViewModel();
         registerViewModel.LoginRequested += ShowLogin;
         CurrentViewModel = registerViewModel;
+    }
+    
+    private void ShowShell()
+    {
+        ShellViewModel shellViewModel = new ShellViewModel();
+        shellViewModel.LogoutRequested += ShowLogin;
+        CurrentViewModel = shellViewModel;
     }
 
 }

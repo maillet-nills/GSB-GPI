@@ -36,12 +36,14 @@ public partial class RegisterViewModel : ViewModelBase
     [RelayCommand]
     private void Register()
     {
+	    Console.WriteLine("Méthode epassée");
 	    using (var context = new GsbGPIDbContext())
 	    {
 		    bool success = context.Register(Email, Password, ConfirmPassword, SelectedRole);
 
 		    if (success)
 		    {
+			    Console.WriteLine("Successfully registered!");
 			    LoginRequested?.Invoke();
 		    }
 

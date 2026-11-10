@@ -24,11 +24,10 @@
         <DataTemplate DataType="vm:RegisterViewModel">
             <views:RegisterView/>
         </DataTemplate>
+        <DataTemplate DataType="vm:ShellViewModel">
+            <views:ShellView/>
+        </DataTemplate>
     </Window.DataTemplates>
 
-    <TransitioningContentControl Content="{Binding CurrentViewModel}">
-        <TransitioningContentControl.PageTransition>
-            <CrossFade Duration="0:00:00.250"/>
-        </TransitioningContentControl.PageTransition>
-    </TransitioningContentControl>
+    <ContentControl Content="{Binding CurrentViewModel}"/>
 </Window>
