@@ -37,7 +37,7 @@ public class GsbGPIDbContext : DbContext
 
 	//Methods
 
-	public bool Register(string email, string password, string confirmPassword, string role)
+	public bool Register(string lastName, string firstName, string email, string password, string confirmPassword, string role)
 	{
 		bool exists = Users.Any(u => u.Email == email);
 
@@ -80,8 +80,8 @@ public class GsbGPIDbContext : DbContext
 				HashedPassword = hashedPassword,
 				Role = role,
 				InterventionLevel = interventionLevel.Value,
-				LastName = "Inconnu",
-				FirstName = "Inconnu"
+				LastName = lastName,
+				FirstName = firstName
 
 			};
 			Users.Add(newTechnician);

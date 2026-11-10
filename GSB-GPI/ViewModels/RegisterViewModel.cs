@@ -11,6 +11,12 @@ public partial class RegisterViewModel : ViewModelBase
     public event Action? LoginRequested;
 
     [ObservableProperty]
+    private string _lastName = string.Empty;
+    
+    [ObservableProperty]
+    private string _firstName = string.Empty;
+
+    [ObservableProperty]
     private string _email = string.Empty;
 
     [ObservableProperty]
@@ -39,7 +45,7 @@ public partial class RegisterViewModel : ViewModelBase
 	    Console.WriteLine("Méthode epassée");
 	    using (var context = new GsbGPIDbContext())
 	    {
-		    bool success = context.Register(Email, Password, ConfirmPassword, SelectedRole);
+		    bool success = context.Register(LastName, FirstName, Email, Password, ConfirmPassword, SelectedRole);
 
 		    if (success)
 		    {
