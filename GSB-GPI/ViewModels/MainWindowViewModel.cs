@@ -25,4 +25,5 @@ public partial class MainWindowViewModel : ViewModelBase
         registerViewModel.LoginRequested += ShowLogin;
         CurrentViewModel = registerViewModel;
     }
+
 }

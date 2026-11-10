@@ -8,28 +8,27 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <AvaloniaResource Include="Assets\**"/>
+        <AvaloniaResource Include="Assets\**" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Avalonia" Version="11.3.12"/>
-        <PackageReference Include="Avalonia.Desktop" Version="11.3.12"/>
-        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.12"/>
-        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.12"/>
+        <PackageReference Include="Avalonia" Version="11.3.12" />
+        <PackageReference Include="Avalonia.Desktop" Version="11.3.12" />
+        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.12" />
+        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.12" />
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
         <PackageReference Include="Avalonia.Diagnostics" Version="11.3.12">
             <IncludeAssets Condition="'$(Configuration)' != 'Debug'">None</IncludeAssets>
             <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
         </PackageReference>
-        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1"/>
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.0" />
+        <PackageReference Include="BCrypt.Net-Next" Version="4.2.0" />
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.4" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="10.0.4" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="11.0.0-rc.3.26522.148">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Data\" />
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.3" />
     </ItemGroup>
 </Project>

@@ -140,7 +140,7 @@
                 <StackPanel>
                     <TextBlock Classes="heading" Text="Équipe de Développement"/>
                     <TextBlock Classes="body"
-                               Text="Logiciel développé par Nills Maillet, Karar Ali-hassan et Mattéo Dauriac."/>
+                               Text="Logiciel développé par Nills Maillet, Karar Ali Hassan et Mattéo Dauriac."/>
                 </StackPanel>
             </StackPanel>
 

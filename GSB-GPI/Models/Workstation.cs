@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GSB_GPI.Models;
 
+[Table("Workstation")]
 public class Workstation : Equipment
 {
     public string Processor { get; set; }

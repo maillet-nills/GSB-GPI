@@ -1,9 +1,13 @@
 using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GSB_GPI.Models;
 
+[Table("Equipment")]
 public class Equipment
 {
+	[Key]
     public int Id { get; set; }
     public string IdGsb { get; set; }
     public string Brand  { get; set; }
@@ -13,6 +17,8 @@ public class Equipment
     public bool Guarantee { get; set; }
     public string Provider { get; set; }
     public DateTime CreatedAt  { get; set; }
+
+    public Equipment(){}
 
     public Equipment(int id, string idGsb, string brand, string model, DateTime purchaseDate, bool rental, bool guarantee, string provider, DateTime createdAt)
     {

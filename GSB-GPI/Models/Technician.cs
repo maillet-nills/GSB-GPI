@@ -1,15 +1,24 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GSB_GPI.Models;
 
+[Table("Technician")]
 public class Technician : User
 {
-    public Level InterventionLevel { get; set; }
-    public string Formation { get; set; }
-    public List<string> Skills { get; set; } = new();
+	[Column("intervention_level")]
+    public Level? InterventionLevel { get; set; }
 
-    public Technician(int idUser, string lastName, string firstName, string address, string register, DateTime hiringDate, List<string> regions, string hashedPassword, bool isSupervisor, Level interventionLevel, string formation, List<string> skills) : base(idUser, lastName, firstName, address, register, hiringDate, regions, hashedPassword, isSupervisor)
+    [Column("education")]
+    public string? Formation { get; set; }
+
+    [Column("skills")]
+    public List<string>? Skills { get; set; } = new();
+
+    public Technician(){}
+
+    public Technician(int idUser, string lastName, string firstName, string address, string register, DateTime hiringDate, List<string> regions,string email, string hashedPassword, bool isSupervisor, Level interventionLevel, string formation, List<string> skills, string role) : base(idUser, lastName, firstName, address, register, hiringDate, regions, email, hashedPassword, isSupervisor,role)
     {
         InterventionLevel = interventionLevel;
         Formation = formation;

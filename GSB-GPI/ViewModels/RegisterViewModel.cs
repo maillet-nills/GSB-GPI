@@ -2,6 +2,7 @@ using System;
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using GSB_GPI.Data;
 
 namespace GSB_GPI.ViewModels;
 
@@ -30,9 +31,26 @@ public partial class RegisterViewModel : ViewModelBase
         "Technicien N3"
     };
 
+
+
     [RelayCommand]
     private void Register()
     {
+	    using (var context = new GsbGPIDbContext())
+	    {
+		    bool success = context.Register(Email, Password, ConfirmPassword, SelectedRole);
+
+		    if (success)
+		    {
+			    LoginRequested?.Invoke();
+		    }
+
+		    else
+		    {
+			    //Message d'erreur
+		    }
+
+	    }
     }
 
     [RelayCommand]
