@@ -58,4 +58,9 @@ public class User
         IsSupervisor = isSupervisor;
         Role = role;
     }
+
+    public override string ToString()
+    {
+	    return $"{IdUser} : {LastName} {FirstName}";
+    }
 }

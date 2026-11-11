@@ -1,8 +1,10 @@
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using GSB_GPI.Data;
+using GSB_GPI.Models;
 
 namespace GSB_GPI.ViewModels;
 
@@ -12,7 +14,7 @@ public partial class RegisterViewModel : ViewModelBase
 
     [ObservableProperty]
     private string _lastName = string.Empty;
-    
+
     [ObservableProperty]
     private string _firstName = string.Empty;
 
@@ -51,10 +53,15 @@ public partial class RegisterViewModel : ViewModelBase
 		    {
 			    Console.WriteLine("Successfully registered!");
 			    LoginRequested?.Invoke();
+
+			    var user = context.Users.First(u => u.Email == Email);
+			    UserSession.CurrentUser =  user;
+
 		    }
 
 		    else
 		    {
+			    Console.WriteLine("Registration failed!");
 			    //Message d'erreur
 		    }
 

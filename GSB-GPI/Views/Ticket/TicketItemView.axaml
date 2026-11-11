@@ -35,7 +35,7 @@
     </UserControl.Styles>
 
     <Grid Margin="24" RowDefinitions="Auto, Auto, *, Auto" RowSpacing="16" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-        
+
         <Grid Grid.Row="0" ColumnDefinitions="*, Auto" VerticalAlignment="Center">
             <StackPanel Grid.Column="0" Spacing="2">
                 <TextBlock Text="Nouveau ticket" Foreground="#1F1F1F" FontSize="24" FontWeight="Bold"/>
@@ -46,11 +46,11 @@
         <Separator Grid.Row="1" Background="#E0E0E0" Margin="0,2"/>
 
         <Grid Grid.Row="2" ColumnDefinitions="*, *" ColumnSpacing="24" VerticalAlignment="Top">
-            
+
             <Border Grid.Column="0" Background="#F9FAFB" CornerRadius="8" Padding="16">
                 <Grid RowDefinitions="Auto, Auto, Auto" RowSpacing="10">
                     <TextBlock Grid.Row="0" Text="Informations générales" FontWeight="Bold" Foreground="#1F1F1F" FontSize="15" Margin="0,0,0,2"/>
-                    
+
                     <StackPanel Grid.Row="1" Spacing="2">
                         <TextBlock Text="Objet" Foreground="#6B6B6B" FontSize="12"/>
                         <TextBox Text="{Binding Subject}" Watermark="Objet du ticket..."/>
@@ -59,11 +59,20 @@
                     <Grid Grid.Row="2" ColumnDefinitions="*, *" ColumnSpacing="12">
                         <StackPanel Grid.Column="0" Spacing="2">
                             <TextBlock Text="Client concerné" Foreground="#6B6B6B" FontSize="12"/>
-                            <TextBox Text="{Binding Client}" Watermark="Nom du client"/>
+                            <ComboBox ItemsSource="{Binding UsersList}"
+                                      SelectedItem="{Binding SelectedUser}"
+                                      PlaceholderText="Sélectionner un client"
+                                      HorizontalAlignment="Stretch">
+                            </ComboBox>
                         </StackPanel>
+
                         <StackPanel Grid.Column="1" Spacing="2">
                             <TextBlock Text="Technicien concerné" Foreground="#6B6B6B" FontSize="12"/>
-                            <TextBox Text="{Binding Technician}" Watermark="Nom du technicien"/>
+                            <ComboBox ItemsSource="{Binding TechniciansList}"
+                                      SelectedItem="{Binding SelectedTechnician}"
+                                      PlaceholderText="Sélectionner un technicien"
+                                      HorizontalAlignment="Stretch">
+                            </ComboBox>
                         </StackPanel>
                     </Grid>
                 </Grid>

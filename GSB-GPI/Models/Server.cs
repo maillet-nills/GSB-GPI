@@ -7,12 +7,21 @@ namespace GSB_GPI.Models;
 [Table("Server")]
 public class Server : Equipment
 {
-    public string Version { get; set; } = "1.0.0";
-    public string Processor { get; set; }
-    public int Ram { get; set; }
-    public int DiskVolume { get; set; }
-    public List<string> Software { get; set; } = new();
-    
+	[Column("version")]
+	public string Version { get; set; } = "1.0.0";
+
+	[Column("processor")]
+	public string Processor { get; set; }
+
+	[Column("ram")]
+	public long? Ram { get; set; } // Attention en C# : un "int8" de PostgreSQL correspond à un "long" (Int64), pas un int !
+
+	[Column("disk_volume")]
+	public int DiskVolume { get; set; }
+
+	[Column("software")]
+	public string[]? Software { get; set; }
+
     [NotMapped]
     public override string Category => "Serveur";
 

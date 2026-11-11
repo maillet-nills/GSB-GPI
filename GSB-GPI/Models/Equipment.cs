@@ -8,16 +8,30 @@ namespace GSB_GPI.Models;
 public class Equipment
 {
 	[Key]
-    public int Id { get; set; }
-    public string IdGsb { get; set; }
-    public string Brand  { get; set; }
-    public string Model { get; set; }
-    public DateTime PurchaseDate { get; set; }
-    public bool Rental { get; set; }
-    public bool Guarantee { get; set; }
-    public string Provider { get; set; }
-    public DateTime CreatedAt  { get; set; }
-    
+	[Column("id")]
+	public int? Id { get; set; }
+
+	[Column("id_gsb")]
+	public string IdGsb { get; set; }
+
+	[Column("brand")]
+	public string Brand { get; set; }
+
+	[Column("model")]
+	public string Model { get; set; }
+
+	[Column("purchase_date")]
+	public DateTime PurchaseDate { get; set; }
+
+	[Column("rental")]
+	public bool Rental { get; set; }
+
+	[Column("guarantee")]
+	public bool Guarantee { get; set; }
+
+	[Column("provider")]
+	public string Provider { get; set; }
+
     [NotMapped]
     public virtual string Category => "Équipement";
 
@@ -33,6 +47,5 @@ public class Equipment
         Rental = rental;
         Guarantee = guarantee;
         Provider = provider;
-        CreatedAt = createdAt;
     }
 }

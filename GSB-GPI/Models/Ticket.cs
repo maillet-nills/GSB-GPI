@@ -8,15 +8,27 @@ namespace GSB_GPI.Models;
 public class Ticket
 {
 	[Key]
-    public int IdTicket { get; set; }
-    public string Subject { get; set; }
-    public Urgency NvUrgency { get; set; }
-    public State State { get; set; }
-    public DateTime Timestamp { get; set; }
-    public Equipment Equipment { get; set; }
-    public User User { get; set; }
-    public Technician Technician { get; set; }
-    public Level InterventionLevel { get; set; }
+	[Column("id_ticket")]
+	public int IdTicket { get; set; }
+
+	[Column("object")]
+	public string Subject { get; set; }
+
+	[Column("emergency_level")]
+	public Urgency NvUrgency { get; set; }
+
+	[Column("state")]
+	public State State { get; set; }
+
+	[Column("timestamp")]
+	public DateTime Timestamp { get; set; }
+
+	[Column("intervention_level")]
+	public Level InterventionLevel { get; set; }
+
+	public User User { get; set; }
+	public Equipment? Equipment { get; set; }
+	public Technician Technician { get; set; }
 
     public Ticket(){}
     public Ticket(int idTicket, string subject, Urgency nvUrgency, State state, DateTime timestamp, Equipment equipment, User user, Technician technician, Level interventionLevel)

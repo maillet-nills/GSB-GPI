@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using GSB_GPI.Models;
 using Microsoft.EntityFrameworkCore;
@@ -31,9 +32,42 @@ public class GsbGPIDbContext : DbContext
 	{
 		base.OnModelCreating(modelBuilder);
 
+		//Conversion to avoid type conflict with the DB
+
+		//Technician table
 		modelBuilder.Entity<Technician>()
 			.Property(t => t.InterventionLevel)
 			.HasConversion<string>();
+
+		//Ticket table
+		modelBuilder.Entity<Ticket>()
+			.Property(t => t.InterventionLevel)
+			.HasConversion<string>();
+
+		modelBuilder.Entity<Ticket>()
+			.Property(t=>t.State)
+			.HasConversion<string>();
+
+		modelBuilder.Entity<Ticket>()
+			.Property((t=> t.NvUrgency))
+			.HasConversion<string>();
+
+		//Foregin keys
+
+		modelBuilder.Entity<Ticket>()
+			.HasOne(t => t.User)
+			.WithMany()
+			.HasForeignKey("idUser");
+
+		modelBuilder.Entity<Ticket>()
+			.HasOne(t => t.Equipment)
+			.WithMany()
+			.HasForeignKey("idEquipment");
+
+		modelBuilder.Entity<Ticket>()
+			.HasOne(t => t.Technician)
+			.WithMany()
+			.HasForeignKey("idTechnician");
 	}
 
 	//Methods
@@ -45,6 +79,7 @@ public class GsbGPIDbContext : DbContext
 		SaveChanges();
 	}
 
+	//Register & Login methods
 	public bool Register(string lastName, string firstName, string email, string password, string confirmPassword, string role)
 	{
 		bool exists = Users.Any(u => u.Email == email);
@@ -141,9 +176,97 @@ public class GsbGPIDbContext : DbContext
 		return isPasswordValid;
 	}
 
+	//Ticket methods
+
+	//Create ticket
+
+	public void CreateTicket(string subject, User user, Technician technician, Urgency urgency, State state, Level level)
+	{
+		using (var db = new GsbGPIDbContext())
+		{
+
+			var existingUser = db.Users.Find((user?.IdUser));
+			var existingTechnician = db.Technicians.Find((technician.IdUser));
+
+			if (existingUser == null || existingTechnician == null)
+			{
+				//Ajout d'une MessageBox bientot (normalement ce if devrait jamais arrivé c'est quasi impossible mais vaut mieut prévenir que guérir.)
+
+				Console.WriteLine("L'utilisateur séléctionné ne figure plus dans la BD.");
+			}
+
+			var ticket = new Ticket
+			{
+				Subject = subject,
+				User = existingUser,
+				Technician = existingTechnician,
+				NvUrgency = urgency,
+				State = state,
+				InterventionLevel = level
+			};
+
+			db.Tickets.Add(ticket);
+			db.SaveChanges();
+		}
+
+	}
+
+	//Equipments methods
+
+	//Create equipment
+
+	public void CreateEquipment(string idGsb, string brand, string model, DateTime purchaseDate, bool rental, bool guarantee, string provider, string type, string? processor, string version, int? ram, int diskVolumeInt, int? diskVolumeString, string? os,string selectedtype)
+	{
+		using (var db = new GsbGPIDbContext())
+		{
+
+			Equipment equipment = selectedtype switch
+			{
+				"Équipement réseau" => new NetEquipment(),
+				"Serveur" => new Server(),
+				"Poste de travail" => new Workstation(),
+				_ => new Equipment()
+			};
+
+			equipment.IdGsb = idGsb;
+			equipment.Brand = brand;
+			equipment.Model = model;
+			equipment.PurchaseDate = DateTime.SpecifyKind(purchaseDate, DateTimeKind.Utc);
+			equipment.Rental = rental;
+			equipment.Guarantee = guarantee;
+			equipment.Provider = provider;
+
+			switch (equipment)
+			{
+				case Server server:
+					server.DiskVolume = diskVolumeInt;
+					server.Version=version;
+					server.Ram = ram;
+					break;
+
+				case NetEquipment netEquipment:
+					netEquipment.Type = type;
+					break;
+
+				case Workstation workstation:
+					workstation.Processor = processor;
+					workstation.Os = os;
+					workstation.Ram = ram;
+					workstation.DiskVolume = diskVolumeInt;
+					break;
+			}
+
+			db.Add(equipment);
+			db.SaveChanges();
+
+		}
+	}
+
+	}
 
 
 
 
 
-}
+
+

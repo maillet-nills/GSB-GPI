@@ -24,4 +24,9 @@ public class Technician : User
         Formation = formation;
         Skills = skills;
     }
+
+    public override string ToString()
+    {
+	    return $"{IdUser} : {LastName} {FirstName}";
+    }
 }

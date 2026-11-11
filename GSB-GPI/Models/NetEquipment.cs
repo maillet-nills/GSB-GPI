@@ -7,8 +7,9 @@ namespace GSB_GPI.Models;
 [Table("NetEquipment")]
 public class NetEquipment : Equipment
 {
+	[Column("type")]
     public string Type { get; set; }
-    
+
     [NotMapped]
     public override string Category => "Équipement réseau";
 

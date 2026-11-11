@@ -1,7 +1,9 @@
 using System;
+using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using GSB_GPI.Data;
+using GSB_GPI.Models;
 
 namespace GSB_GPI.ViewModels;
 
@@ -25,12 +27,17 @@ public partial class LoginViewModel : ViewModelBase
 
 		    if (context.Login(Email, Password))
 		    {
+			    var user = context.Users.First(u => u.Email == Email);
+			    UserSession.CurrentUser =  user;
+
 			    LoginSuceeded?.Invoke();
+
 		    }
 
 		    else
 		    {
 			    //Message d'erreur
+			    Console.WriteLine("Email or password is incorrect.");
 		    }
 
 	    }
