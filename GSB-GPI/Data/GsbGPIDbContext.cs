@@ -23,7 +23,7 @@ public class GsbGPIDbContext : DbContext
 
 	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 	{
-		string connectionstring = "Host=db.jtojtxlpznkgmwgbdxhm.supabase.co;Port=5432;Database=postgres;Username=postgres;Password=mQNxiRgKhdttXsgPddGP";
+		string connectionstring = "Host=aws-0-eu-west-1.pooler.supabase.com;Port=6543;Database=postgres;Username=postgres.jtojtxlpznkgmwgbdxhm;Password=mQNxiRgKhdttXsgPddGP;No Reset On Close=true;";
 		optionsBuilder.UseNpgsql(connectionstring);
 	}
 
