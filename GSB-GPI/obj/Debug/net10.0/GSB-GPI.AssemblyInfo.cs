@@ -13,10 +13,10 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("GSB-GPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e7ab53aa88aec39d6cce4033d22c42e301224e56")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f2e5f2191d77408f3f053bfb3141475f0bcc339b")]
 [assembly: System.Reflection.AssemblyProductAttribute("GSB-GPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("GSB-GPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
 
-// 由 MSBuild WriteCodeFragment 类生成。
+// Généré par la classe MSBuild WriteCodeFragment.
 

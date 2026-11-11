@@ -17,6 +17,9 @@ public class Equipment
     public bool Guarantee { get; set; }
     public string Provider { get; set; }
     public DateTime CreatedAt  { get; set; }
+    
+    [NotMapped]
+    public virtual string Category => "Équipement";
 
     public Equipment(){}
 

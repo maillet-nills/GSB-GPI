@@ -1,0 +1,149 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:GSB_GPI.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="550"
+             x:Class="GSB_GPI.Views.InventoryItemView"
+             x:DataType="vm:InventoryItemViewModel"
+             Background="White">
+
+    <UserControl.Styles>
+        <Style Selector="Button.add">
+            <Setter Property="Background" Value="#2E9E5B"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="16,6"/>
+            <Setter Property="CornerRadius" Value="6"/>
+        </Style>
+        <Style Selector="Button.add:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#268A4E"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+        <Style Selector="Button.add:pressed /template/ ContentPresenter">
+            <Setter Property="Background" Value="#1F7342"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+        <Style Selector="TextBox">
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="MinHeight" Value="32"/>
+        </Style>
+        <Style Selector="ComboBox">
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="MinHeight" Value="32"/>
+        </Style>
+    </UserControl.Styles>
+
+    <Grid Margin="24" RowDefinitions="Auto, Auto, *, Auto" RowSpacing="16" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        
+        <Grid Grid.Row="0" ColumnDefinitions="*, Auto" VerticalAlignment="Center">
+            <StackPanel Grid.Column="0" Spacing="2">
+                <TextBlock Text="Fiche équipement" Foreground="#1F1F1F" FontSize="24" FontWeight="Bold"/>
+                <TextBlock Text="Gestion du parc informatique" Foreground="#6B6B6B" FontSize="13"/>
+            </StackPanel>
+            
+            <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="12" VerticalAlignment="Center">
+                <TextBlock Text="Type d'équipement :" VerticalAlignment="Center" Foreground="#1F1F1F" FontWeight="SemiBold"/>
+                <ComboBox ItemsSource="{Binding EquipmentTypes}"
+                          SelectedItem="{Binding SelectedType}"
+                          Width="220"
+                          HorizontalAlignment="Right"/>
+            </StackPanel>
+        </Grid>
+
+        <Separator Grid.Row="1" Background="#E0E0E0" Margin="0,2"/>
+
+        <Grid Grid.Row="2" ColumnDefinitions="*, *" ColumnSpacing="24" VerticalAlignment="Top">
+            
+            <Border Grid.Column="0" Background="#F9FAFB" CornerRadius="8" Padding="16">
+                <Grid RowDefinitions="Auto, Auto, Auto, Auto" RowSpacing="10">
+                    <TextBlock Grid.Row="0" Text="Informations générales" FontWeight="Bold" Foreground="#1F1F1F" FontSize="15" Margin="0,0,0,2"/>
+                    
+                    <Grid Grid.Row="1" ColumnDefinitions="*, *" ColumnSpacing="12">
+                        <StackPanel Grid.Column="0" Spacing="2">
+                            <TextBlock Text="ID GSB" Foreground="#6B6B6B" FontSize="12"/>
+                            <TextBox Text="{Binding IdGsb}" Watermark="GSB-12345"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Spacing="2">
+                            <TextBlock Text="Fournisseur" Foreground="#6B6B6B" FontSize="12"/>
+                            <TextBox Text="{Binding Provider}" Watermark="Fournisseur"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid Grid.Row="2" ColumnDefinitions="*, *" ColumnSpacing="12">
+                        <StackPanel Grid.Column="0" Spacing="2">
+                            <TextBlock Text="Marque" Foreground="#6B6B6B" FontSize="12"/>
+                            <TextBox Text="{Binding Brand}" Watermark="Dell, Cisco..."/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Spacing="2">
+                            <TextBlock Text="Modèle" Foreground="#6B6B6B" FontSize="12"/>
+                            <TextBox Text="{Binding Model}" Watermark="Modèle"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <StackPanel Grid.Row="3" Orientation="Horizontal" Spacing="24" Margin="0,2,0,0">
+                        <CheckBox Content="En location" IsChecked="{Binding Rental}"/>
+                        <CheckBox Content="Sous garantie" IsChecked="{Binding Guarantee}"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <Border Grid.Column="1" Background="#F9FAFB" CornerRadius="8" Padding="16">
+                <StackPanel Spacing="10">
+                    <TextBlock Text="Spécificités techniques" FontWeight="Bold" Foreground="#1F1F1F" FontSize="15" Margin="0,0,0,2"/>
+
+                    <StackPanel Spacing="10" IsVisible="{Binding IsNetEquipment}">
+                        <StackPanel Spacing="2">
+                            <TextBlock Text="Type de réseau" Foreground="#6B6B6B" FontSize="12"/>
+                            <TextBox Text="{Binding Type}" Watermark="Switch, Routeur..."/>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <Grid RowDefinitions="Auto, Auto" ColumnDefinitions="*, *" ColumnSpacing="12" RowSpacing="10" IsVisible="{Binding IsServer}">
+                        <StackPanel Grid.Row="0" Grid.Column="0" Spacing="2">
+                            <TextBlock Text="Version" Foreground="#6B6B6B" FontSize="12"/>
+                            <TextBox Text="{Binding Version}"/>
+                        </StackPanel>
+                        <StackPanel Grid.Row="0" Grid.Column="1" Spacing="2">
+                            <TextBlock Text="Processeur" Foreground="#6B6B6B" FontSize="12"/>
+                            <TextBox Text="{Binding Processor}"/>
+                        </StackPanel>
+                        <StackPanel Grid.Row="1" Grid.Column="0" Spacing="2">
+                            <TextBlock Text="RAM (Go)" Foreground="#6B6B6B" FontSize="12"/>
+                            <TextBox Text="{Binding Ram}"/>
+                        </StackPanel>
+                        <StackPanel Grid.Row="1" Grid.Column="1" Spacing="2">
+                            <TextBlock Text="Volume disque (Go)" Foreground="#6B6B6B" FontSize="12"/>
+                            <TextBox Text="{Binding DiskVolumeInt}"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid RowDefinitions="Auto, Auto" ColumnDefinitions="*, *" ColumnSpacing="12" RowSpacing="10" IsVisible="{Binding IsWorkstation}">
+                        <StackPanel Grid.Row="0" Grid.Column="0" Spacing="2">
+                            <TextBlock Text="Processeur" Foreground="#6B6B6B" FontSize="12"/>
+                            <TextBox Text="{Binding Processor}"/>
+                        </StackPanel>
+                        <StackPanel Grid.Row="0" Grid.Column="1" Spacing="2">
+                            <TextBlock Text="Système d'exploitation (OS)" Foreground="#6B6B6B" FontSize="12"/>
+                            <TextBox Text="{Binding Os}" Watermark="Windows 11 Pro"/>
+                        </StackPanel>
+                        <StackPanel Grid.Row="1" Grid.Column="0" Spacing="2">
+                            <TextBlock Text="RAM" Foreground="#6B6B6B" FontSize="12"/>
+                            <TextBox Text="{Binding Ram}" Watermark="16 Go"/>
+                        </StackPanel>
+                        <StackPanel Grid.Row="1" Grid.Column="1" Spacing="2">
+                            <TextBlock Text="Volume disque" Foreground="#6B6B6B" FontSize="12"/>
+                            <TextBox Text="{Binding DiskVolumeString}" Watermark="512 Go SSD"/>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <StackPanel Grid.Row="3" Orientation="Horizontal" Spacing="12" HorizontalAlignment="Right">
+            <Button Content="Annuler" Command="{Binding CancelCommand}" Padding="16,6"/>
+            <Button Classes="add" Content="Enregistrer" Command="{Binding SaveCommand}"/>
+        </StackPanel>
+
+    </Grid>
+</UserControl>

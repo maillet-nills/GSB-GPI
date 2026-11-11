@@ -1,6 +1,7 @@
 using System;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using GSB_GPI.Models;
 
 namespace GSB_GPI.ViewModels;
 
@@ -38,13 +39,31 @@ public partial class ShellViewModel : ViewModelBase
     [RelayCommand]
     private void ShowInventory()
     {
-        CurrentPage = new InventoryViewModel();
+        InventoryViewModel inventoryViewModel = new InventoryViewModel();
+        inventoryViewModel.CreateRequested += ShowInventoryItem;
+        CurrentPage = inventoryViewModel;
+    }
+
+    private void ShowInventoryItem()
+    {
+        InventoryItemViewModel inventoryItemViewModel = new InventoryItemViewModel();
+        inventoryItemViewModel.CloseRequested += ShowInventory;
+        CurrentPage = inventoryItemViewModel;
     }
 
     [RelayCommand]
     private void ShowTicket()
     {
-        CurrentPage = new TicketViewModel();
+        TicketViewModel ticketViewModel = new TicketViewModel();
+        ticketViewModel.CreateRequested += ShowTicketItem;
+        CurrentPage = ticketViewModel;
+    }
+    
+    private void ShowTicketItem()
+    {
+        TicketItemViewModel ticketItemViewModel = new TicketItemViewModel();
+        ticketItemViewModel.Closed += ShowTicket;
+        CurrentPage = ticketItemViewModel;
     }
 
     [RelayCommand]

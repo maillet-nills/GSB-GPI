@@ -1,0 +1,95 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:GSB_GPI.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="570" d:DesignHeight="450"
+             x:Class="GSB_GPI.Views.TicketView"
+             x:DataType="vm:TicketViewModel"
+             Background="White">
+
+    <UserControl.Styles>
+        <Style Selector="Button.add">
+            <Setter Property="Background" Value="#2E9E5B"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="16,8"/>
+            <Setter Property="CornerRadius" Value="6"/>
+        </Style>
+        <Style Selector="Button.add:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#268A4E"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+        <Style Selector="Button.add:pressed /template/ ContentPresenter">
+            <Setter Property="Background" Value="#1F7342"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+    </UserControl.Styles>
+
+    <DockPanel Margin="40,36">
+        <StackPanel DockPanel.Dock="Top" Spacing="6" Margin="0,0,0,20">
+            <TextBlock Text="Incidents"
+                       Foreground="#1F1F1F"
+                       FontSize="32"
+                       FontWeight="Bold"/>
+            <TextBlock Text="Liste des tickets"
+                       Foreground="#6B6B6B"
+                       FontSize="16"/>
+        </StackPanel>
+
+        <Grid DockPanel.Dock="Top" ColumnDefinitions="Auto,Auto,*,Auto" Margin="0,0,0,12">
+            <TextBlock Grid.Column="0"
+                       Text="Niveau d'intervention"
+                       Foreground="#6B6B6B"
+                       VerticalAlignment="Center"/>
+            <ComboBox Grid.Column="1"
+                      ItemsSource="{Binding Levels}"
+                      SelectedItem="{Binding SelectedLevel}"
+                      MinWidth="200"
+                      Margin="10,0,0,0"/>
+            <Button Grid.Column="3"
+                    Classes="add"
+                    Content="+ Nouveau ticket"
+                    Command="{Binding CreateCommand}"
+                    VerticalAlignment="Center"/>
+        </Grid>
+
+        <Grid>
+            <DataGrid x:CompileBindings="False"
+                      ItemsSource="{Binding Items}"
+                      IsReadOnly="True"
+                      AutoGenerateColumns="False"
+                      HeadersVisibility="Column"
+                      GridLinesVisibility="All"
+                      BorderThickness="1"
+                      BorderBrush="#E0E0E0"
+                      ColumnHeaderHeight="36"
+                      RowHeight="40">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="N°" Binding="{Binding IdTicket}"/>
+                    <DataGridTextColumn Header="Objet" Binding="{Binding Subject}" Width="*"/>
+                    <DataGridTextColumn Header="Urgence" Binding="{Binding NvUrgency}"/>
+                    <DataGridTextColumn Header="État" Binding="{Binding State}"/>
+                    <DataGridTextColumn Header="Niveau" Binding="{Binding Level}"/>
+                    <DataGridTextColumn Header="Créé le" Binding="{Binding Timestamp, StringFormat=dd/MM/yyyy HH:mm}"/>
+                    <DataGridTemplateColumn Header="">
+                        <DataTemplate>
+                            <Button Content="Modifier"
+                                    Command="{Binding $parent[DataGrid].DataContext.EditCommand}"
+                                    CommandParameter="{Binding}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <Border IsVisible="{Binding !Items.Count}"
+                    IsHitTestVisible="False"
+                    VerticalAlignment="Top"
+                    Margin="1,37,1,0"
+                    Height="40"
+                    Background="White"
+                    BorderBrush="#E0E0E0"
+                    BorderThickness="0,0,0,1"/>
+        </Grid>
+    </DockPanel>
+</UserControl>

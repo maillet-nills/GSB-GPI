@@ -12,6 +12,9 @@ public class Server : Equipment
     public int Ram { get; set; }
     public int DiskVolume { get; set; }
     public List<string> Software { get; set; } = new();
+    
+    [NotMapped]
+    public override string Category => "Serveur";
 
     public Server(){}
     public Server(int id, string idGsb, string brand, string model, DateTime purchaseDate, bool rental, bool guarantee, string provider, DateTime createdAt, string version, string processor, int ram, int diskVolume) : base(id, idGsb, brand, model, purchaseDate, rental, guarantee, provider, createdAt)

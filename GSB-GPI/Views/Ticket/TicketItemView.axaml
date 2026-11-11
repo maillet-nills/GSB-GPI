@@ -1,0 +1,100 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:GSB_GPI.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="450"
+             x:Class="GSB_GPI.Views.TicketItemView"
+             x:DataType="vm:TicketItemViewModel"
+             Background="White">
+
+    <UserControl.Styles>
+        <Style Selector="Button.add">
+            <Setter Property="Background" Value="#2E9E5B"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="16,6"/>
+            <Setter Property="CornerRadius" Value="6"/>
+        </Style>
+        <Style Selector="Button.add:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#268A4E"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+        <Style Selector="Button.add:pressed /template/ ContentPresenter">
+            <Setter Property="Background" Value="#1F7342"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+        <Style Selector="TextBox">
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="MinHeight" Value="32"/>
+        </Style>
+        <Style Selector="ComboBox">
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="MinHeight" Value="32"/>
+        </Style>
+    </UserControl.Styles>
+
+    <Grid Margin="24" RowDefinitions="Auto, Auto, *, Auto" RowSpacing="16" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        
+        <Grid Grid.Row="0" ColumnDefinitions="*, Auto" VerticalAlignment="Center">
+            <StackPanel Grid.Column="0" Spacing="2">
+                <TextBlock Text="Nouveau ticket" Foreground="#1F1F1F" FontSize="24" FontWeight="Bold"/>
+                <TextBlock Text="Fiche de l'incident" Foreground="#6B6B6B" FontSize="13"/>
+            </StackPanel>
+        </Grid>
+
+        <Separator Grid.Row="1" Background="#E0E0E0" Margin="0,2"/>
+
+        <Grid Grid.Row="2" ColumnDefinitions="*, *" ColumnSpacing="24" VerticalAlignment="Top">
+            
+            <Border Grid.Column="0" Background="#F9FAFB" CornerRadius="8" Padding="16">
+                <Grid RowDefinitions="Auto, Auto, Auto" RowSpacing="10">
+                    <TextBlock Grid.Row="0" Text="Informations générales" FontWeight="Bold" Foreground="#1F1F1F" FontSize="15" Margin="0,0,0,2"/>
+                    
+                    <StackPanel Grid.Row="1" Spacing="2">
+                        <TextBlock Text="Objet" Foreground="#6B6B6B" FontSize="12"/>
+                        <TextBox Text="{Binding Subject}" Watermark="Objet du ticket..."/>
+                    </StackPanel>
+
+                    <Grid Grid.Row="2" ColumnDefinitions="*, *" ColumnSpacing="12">
+                        <StackPanel Grid.Column="0" Spacing="2">
+                            <TextBlock Text="Client concerné" Foreground="#6B6B6B" FontSize="12"/>
+                            <TextBox Text="{Binding Client}" Watermark="Nom du client"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Spacing="2">
+                            <TextBlock Text="Technicien concerné" Foreground="#6B6B6B" FontSize="12"/>
+                            <TextBox Text="{Binding Technician}" Watermark="Nom du technicien"/>
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+            </Border>
+
+            <Border Grid.Column="1" Background="#F9FAFB" CornerRadius="8" Padding="16">
+                <Grid RowDefinitions="Auto, Auto" RowSpacing="10">
+                    <TextBlock Grid.Row="0" Text="Suivi et état" FontWeight="Bold" Foreground="#1F1F1F" FontSize="15" Margin="0,0,0,2"/>
+
+                    <Grid Grid.Row="1" ColumnDefinitions="*, *, *" ColumnSpacing="8">
+                        <StackPanel Grid.Column="0" Spacing="2">
+                            <TextBlock Text="Urgence" Foreground="#6B6B6B" FontSize="12"/>
+                            <ComboBox ItemsSource="{Binding Urgencies}" SelectedItem="{Binding SelectedUrgency}" HorizontalAlignment="Stretch"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Spacing="2">
+                            <TextBlock Text="Niveau" Foreground="#6B6B6B" FontSize="12"/>
+                            <ComboBox ItemsSource="{Binding Levels}" SelectedItem="{Binding SelectedLevel}" HorizontalAlignment="Stretch"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="2" Spacing="2">
+                            <TextBlock Text="État" Foreground="#6B6B6B" FontSize="12"/>
+                            <ComboBox ItemsSource="{Binding States}" SelectedItem="{Binding SelectedState}" HorizontalAlignment="Stretch"/>
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <StackPanel Grid.Row="3" Orientation="Horizontal" Spacing="12" HorizontalAlignment="Right">
+            <Button Content="Annuler" Command="{Binding CancelCommand}" Padding="16,6"/>
+            <Button Classes="add" Content="Enregistrer" Command="{Binding SaveCommand}"/>
+        </StackPanel>
+
+    </Grid>
+</UserControl>

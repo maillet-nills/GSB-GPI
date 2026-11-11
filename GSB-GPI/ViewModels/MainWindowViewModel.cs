@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using GSB_GPI.Models;
 
 namespace GSB_GPI.ViewModels;
 
