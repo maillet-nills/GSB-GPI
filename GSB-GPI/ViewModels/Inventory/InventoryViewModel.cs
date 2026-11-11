@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using GSB_GPI.Data;
 using GSB_GPI.Models;
 
 namespace GSB_GPI.ViewModels;
@@ -11,7 +12,7 @@ namespace GSB_GPI.ViewModels;
 public partial class InventoryViewModel : ViewModelBase
 {
     public event Action? CreateRequested;
-    public ObservableCollection<Equipment> Items { get; } = new();
+    public ObservableCollection<Equipment> Items { get; set; } = new();
 
     public string[] Kinds { get; } = { "Tous", "Poste de travail", "Serveur", "Équipement réseau" };
 
@@ -25,10 +26,24 @@ public partial class InventoryViewModel : ViewModelBase
 
     partial void OnSelectedKindChanged(string value) => Refresh();
 
+    public InventoryViewModel()
+    {
+        LoadData();
+    }
+
     private void Refresh()
     {
         OnPropertyChanged(nameof(FilteredItems));
         OnPropertyChanged(nameof(IsEmpty));
+    }
+    
+    public void LoadData()
+    {
+        using (var context = new GsbGPIDbContext())
+        {
+            Items = new ObservableCollection<Equipment>(context.Equipments.ToList());
+            
+        }
     }
 
     [RelayCommand]

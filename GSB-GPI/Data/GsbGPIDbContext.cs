@@ -11,7 +11,7 @@ namespace GSB_GPI.Data;
 public class GsbGPIDbContext : DbContext
 {
 
-	public DbSet<Equipment> Materiels { get; set; }
+	public DbSet<Equipment> Equipments { get; set; }
 	public DbSet<Server> Servers { get; set; }
 	public DbSet<NetEquipment>  NetEquipments { get; set; }
 	public DbSet<Workstation> workstations { get; set; }

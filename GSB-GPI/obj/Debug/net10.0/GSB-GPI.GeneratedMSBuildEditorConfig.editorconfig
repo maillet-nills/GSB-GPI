@@ -15,41 +15,40 @@ build_property.ProjectTypeGuids =
 build_property.InvariantGlobalization = 
 build_property.PlatformNeutralAssembly = 
 build_property.EnforceExtendedAnalyzerRules = 
-build_property.EntryPointFilePath = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = GSB-GPI
-build_property.ProjectDir = C:\Users\alkth\RiderProjects\GSB-GPI4\GSB-GPI\
+build_property.ProjectDir = C:\Users\nills\RiderProjects\GSB-GPI\GSB-GPI\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.EffectiveAnalysisLevelStyle = 10.0
 build_property.EnableCodeStyleSeverity = 
 
-[C:/Users/alkth/RiderProjects/GSB-GPI4/GSB-GPI/App.axaml]
+[C:/Users/nills/RiderProjects/GSB-GPI/GSB-GPI/App.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[C:/Users/alkth/RiderProjects/GSB-GPI4/GSB-GPI/Views/Auth/LoginView.axaml]
+[C:/Users/nills/RiderProjects/GSB-GPI/GSB-GPI/Views/Auth/LoginView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[C:/Users/alkth/RiderProjects/GSB-GPI4/GSB-GPI/Views/Auth/RegisterView.axaml]
+[C:/Users/nills/RiderProjects/GSB-GPI/GSB-GPI/Views/Auth/RegisterView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[C:/Users/alkth/RiderProjects/GSB-GPI4/GSB-GPI/Views/DashboardView.axaml]
+[C:/Users/nills/RiderProjects/GSB-GPI/GSB-GPI/Views/DashboardView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[C:/Users/alkth/RiderProjects/GSB-GPI4/GSB-GPI/Views/Inventory/InventoryItemView.axaml]
+[C:/Users/nills/RiderProjects/GSB-GPI/GSB-GPI/Views/Inventory/InventoryItemView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[C:/Users/alkth/RiderProjects/GSB-GPI4/GSB-GPI/Views/Inventory/InventoryView.axaml]
+[C:/Users/nills/RiderProjects/GSB-GPI/GSB-GPI/Views/Inventory/InventoryView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[C:/Users/alkth/RiderProjects/GSB-GPI4/GSB-GPI/Views/MainWindow.axaml]
+[C:/Users/nills/RiderProjects/GSB-GPI/GSB-GPI/Views/MainWindow.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[C:/Users/alkth/RiderProjects/GSB-GPI4/GSB-GPI/Views/ShellView.axaml]
+[C:/Users/nills/RiderProjects/GSB-GPI/GSB-GPI/Views/ShellView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[C:/Users/alkth/RiderProjects/GSB-GPI4/GSB-GPI/Views/Ticket/TicketItemView.axaml]
+[C:/Users/nills/RiderProjects/GSB-GPI/GSB-GPI/Views/Ticket/TicketItemView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[C:/Users/alkth/RiderProjects/GSB-GPI4/GSB-GPI/Views/Ticket/TicketView.axaml]
+[C:/Users/nills/RiderProjects/GSB-GPI/GSB-GPI/Views/Ticket/TicketView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
