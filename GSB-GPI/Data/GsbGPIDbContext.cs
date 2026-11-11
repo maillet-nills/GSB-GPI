@@ -135,7 +135,7 @@ public class GsbGPIDbContext : DbContext
 		}
 		else
 		{
-			AddLog("WARNING", "Tentative de Login échoué, mauvais mot de passe : {email}");
+			AddLog("WARNING", $"Tentative de Login échoué, mauvais mot de passe : {email}");
 		}
 
 		return isPasswordValid;
