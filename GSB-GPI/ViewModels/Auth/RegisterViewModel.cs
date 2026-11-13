@@ -44,18 +44,11 @@ public partial class RegisterViewModel : ViewModelBase
     [RelayCommand]
     private void Register()
     {
-	    Console.WriteLine("Méthode epassée");
-	    using (var context = new GsbGPIDbContext())
-	    {
-		    bool success = context.Register(LastName, FirstName, Email, Password, ConfirmPassword, SelectedRole);
 
-		    if (success)
+		    if (DbToolBox.Register(LastName, FirstName, Email, Password, ConfirmPassword, SelectedRole))
 		    {
 			    Console.WriteLine("Successfully registered!");
 			    LoginRequested?.Invoke();
-
-			    var user = context.Users.First(u => u.Email == Email);
-			    UserSession.CurrentUser =  user;
 
 		    }
 
@@ -65,7 +58,6 @@ public partial class RegisterViewModel : ViewModelBase
 			    //Message d'erreur
 		    }
 
-	    }
     }
 
     [RelayCommand]

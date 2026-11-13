@@ -35,9 +35,13 @@ public class Equipment
     [NotMapped]
     public virtual string Category => "Équipement";
 
+    public User User { get; set; }
+
+
+
     public Equipment(){}
 
-    public Equipment(int id, string idGsb, string brand, string model, DateTime purchaseDate, bool rental, bool guarantee, string provider, DateTime createdAt)
+    public Equipment(int id, string idGsb, string brand, string model, DateTime purchaseDate, bool rental, bool guarantee, string provider, DateTime createdAt,User user)
     {
         Id = id;
         IdGsb = idGsb;
@@ -47,5 +51,11 @@ public class Equipment
         Rental = rental;
         Guarantee = guarantee;
         Provider = provider;
+        User = user;
+    }
+
+    public override string ToString()
+    {
+	    return $"{IdGsb} : {Brand}, {Model}";
     }
 }

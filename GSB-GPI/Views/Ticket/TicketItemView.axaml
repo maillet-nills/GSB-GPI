@@ -48,7 +48,7 @@
         <Grid Grid.Row="2" ColumnDefinitions="*, *" ColumnSpacing="24" VerticalAlignment="Top">
 
             <Border Grid.Column="0" Background="#F9FAFB" CornerRadius="8" Padding="16">
-                <Grid RowDefinitions="Auto, Auto, Auto" RowSpacing="10">
+                <Grid RowDefinitions="Auto, Auto, Auto,Auto" RowSpacing="10">
                     <TextBlock Grid.Row="0" Text="Informations générales" FontWeight="Bold" Foreground="#1F1F1F" FontSize="15" Margin="0,0,0,2"/>
 
                     <StackPanel Grid.Row="1" Spacing="2">
@@ -56,7 +56,16 @@
                         <TextBox Text="{Binding Subject}" Watermark="Objet du ticket..."/>
                     </StackPanel>
 
-                    <Grid Grid.Row="2" ColumnDefinitions="*, *" ColumnSpacing="12">
+                    <StackPanel Grid.Row="2" Spacing="2">
+	                    <TextBlock Text="Équipement concerné" Foreground="#6B6B6B" FontSize="12"/>
+	                    <ComboBox ItemsSource="{Binding EquipmentsList}"
+	                              SelectedItem="{Binding SelectedEquipment}"
+	                              PlaceholderText="Sélectionner un équipement"
+	                              HorizontalAlignment="Stretch">
+	                    </ComboBox>
+                    </StackPanel>
+
+                    <Grid Grid.Row="3" ColumnDefinitions="*, *" ColumnSpacing="12">
                         <StackPanel Grid.Column="0" Spacing="2">
                             <TextBlock Text="Client concerné" Foreground="#6B6B6B" FontSize="12"/>
                             <ComboBox ItemsSource="{Binding UsersList}"

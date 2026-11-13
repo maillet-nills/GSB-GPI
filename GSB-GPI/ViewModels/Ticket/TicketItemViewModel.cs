@@ -18,9 +18,11 @@ public partial class TicketItemViewModel : ViewModelBase
 
     public List<User> UsersList { get; set; }
     public List<Technician> TechniciansList { get; set; }
+    public List<Equipment> EquipmentsList { get; set; }
 
     public User SelectedUser { get; set; }
     public Technician SelectedTechnician { get; set; }
+    public Equipment SelectedEquipment { get; set; }
 
     [ObservableProperty] private string _subject = string.Empty;
     [ObservableProperty] private Urgency _selectedUrgency = Urgency.FAIBLE;
@@ -34,25 +36,18 @@ public partial class TicketItemViewModel : ViewModelBase
 
     public void LoadData()
     {
-	    using (var context = new GsbGPIDbContext())
-	    {
-		    UsersList = context.Users
-			    .ToList();
+	    UsersList = DbToolBox.getAllUsers();
+	    TechniciansList = DbToolBox.getAllTechnicians();
+	    EquipmentsList = DbToolBox.LoadEquipments();
 
-		    TechniciansList = context.Technicians
-			    .ToList();
-	    }
     }
 
     [RelayCommand]
     private void Save()
     {
-	    using (var db = new GsbGPIDbContext())
-	    {
-		    db.CreateTicket(Subject,SelectedUser,SelectedTechnician,SelectedUrgency,SelectedState,SelectedLevel);
+		    DbToolBox.CreateTicket(Subject,SelectedUser,SelectedTechnician,SelectedUrgency,SelectedState,SelectedLevel,SelectedEquipment);
 		    Console.WriteLine("Ticket created !");
 		    //MessageBox à insérer.
-	    }
         Closed?.Invoke();
     }
 

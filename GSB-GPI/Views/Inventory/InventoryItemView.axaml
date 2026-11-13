@@ -35,13 +35,13 @@
     </UserControl.Styles>
 
     <Grid Margin="24" RowDefinitions="Auto, Auto, *, Auto" RowSpacing="16" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-        
+
         <Grid Grid.Row="0" ColumnDefinitions="*, Auto" VerticalAlignment="Center">
             <StackPanel Grid.Column="0" Spacing="2">
                 <TextBlock Text="Fiche équipement" Foreground="#1F1F1F" FontSize="24" FontWeight="Bold"/>
                 <TextBlock Text="Gestion du parc informatique" Foreground="#6B6B6B" FontSize="13"/>
             </StackPanel>
-            
+
             <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="12" VerticalAlignment="Center">
                 <TextBlock Text="Type d'équipement :" VerticalAlignment="Center" Foreground="#1F1F1F" FontWeight="SemiBold"/>
                 <ComboBox ItemsSource="{Binding EquipmentTypes}"
@@ -49,16 +49,17 @@
                           Width="220"
                           HorizontalAlignment="Right"/>
             </StackPanel>
+
         </Grid>
 
         <Separator Grid.Row="1" Background="#E0E0E0" Margin="0,2"/>
 
         <Grid Grid.Row="2" ColumnDefinitions="*, *" ColumnSpacing="24" VerticalAlignment="Top">
-            
+
             <Border Grid.Column="0" Background="#F9FAFB" CornerRadius="8" Padding="16">
-                <Grid RowDefinitions="Auto, Auto, Auto, Auto" RowSpacing="10">
+                <Grid RowDefinitions="Auto, Auto, Auto, Auto, Auto" RowSpacing="10">
                     <TextBlock Grid.Row="0" Text="Informations générales" FontWeight="Bold" Foreground="#1F1F1F" FontSize="15" Margin="0,0,0,2"/>
-                    
+
                     <Grid Grid.Row="1" ColumnDefinitions="*, *" ColumnSpacing="12">
                         <StackPanel Grid.Column="0" Spacing="2">
                             <TextBlock Text="ID GSB" Foreground="#6B6B6B" FontSize="12"/>
@@ -81,7 +82,15 @@
                         </StackPanel>
                     </Grid>
 
-                    <StackPanel Grid.Row="3" Orientation="Horizontal" Spacing="24" Margin="0,2,0,0">
+                    <StackPanel Grid.Row="3" Spacing="2">
+	                    <TextBlock Text="Client concerné" Foreground="#6B6B6B" FontSize="12"/>
+	                    <ComboBox ItemsSource="{Binding UsersList}"
+	                              SelectedItem="{Binding SelectedUser}"
+	                              PlaceholderText="Sélectionner un client"
+	                              HorizontalAlignment="Stretch"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="4" Orientation="Horizontal" Spacing="24" Margin="0,2,0,0">
                         <CheckBox Content="En location" IsChecked="{Binding Rental}"/>
                         <CheckBox Content="Sous garantie" IsChecked="{Binding Guarantee}"/>
                     </StackPanel>
@@ -135,6 +144,7 @@
                             <TextBlock Text="Volume disque" Foreground="#6B6B6B" FontSize="12"/>
                             <TextBox Text="{Binding DiskVolumeString}" Watermark="512 Go SSD"/>
                         </StackPanel>
+
                     </Grid>
                 </StackPanel>
             </Border>

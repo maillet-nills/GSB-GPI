@@ -27,7 +27,7 @@ public class Workstation : Equipment
 
     public Workstation(){}
 
-    public Workstation(int id, string idGsb, string brand, string model, DateTime purchaseDate, bool rental, bool guarantee, string provider, DateTime createdAt, string processor, string os, int ram, int diskVolume) : base(id, idGsb, brand, model, purchaseDate, rental, guarantee, provider, createdAt)
+    public Workstation(int id, string idGsb, string brand, string model, DateTime purchaseDate, bool rental, bool guarantee, string provider, DateTime createdAt, string processor, string os, int ram, int diskVolume,User user) : base(id, idGsb, brand, model, purchaseDate, rental, guarantee, provider, createdAt,user)
     {
         Processor = processor;
         Os = os;

@@ -25,13 +25,9 @@ public partial class LoginViewModel : ViewModelBase
 	    using (var context = new GsbGPIDbContext())
 	    {
 
-		    if (context.Login(Email, Password))
+		    if (DbToolBox.Login(Email, Password))
 		    {
-			    var user = context.Users.First(u => u.Email == Email);
-			    UserSession.CurrentUser =  user;
-
 			    LoginSuceeded?.Invoke();
-
 		    }
 
 		    else

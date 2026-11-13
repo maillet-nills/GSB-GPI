@@ -26,7 +26,7 @@ public class Server : Equipment
     public override string Category => "Serveur";
 
     public Server(){}
-    public Server(int id, string idGsb, string brand, string model, DateTime purchaseDate, bool rental, bool guarantee, string provider, DateTime createdAt, string version, string processor, int ram, int diskVolume) : base(id, idGsb, brand, model, purchaseDate, rental, guarantee, provider, createdAt)
+    public Server(int id, string idGsb, string brand, string model, DateTime purchaseDate, bool rental, bool guarantee, string provider, DateTime createdAt, string version, string processor, int ram, int diskVolume,User user) : base(id, idGsb, brand, model, purchaseDate, rental, guarantee, provider, createdAt,user)
     {
         Version = version;
         Processor = processor;

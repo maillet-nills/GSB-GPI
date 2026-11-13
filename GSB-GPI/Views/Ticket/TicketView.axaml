@@ -70,7 +70,7 @@
                     <DataGridTextColumn Header="Objet" Binding="{Binding Subject}" Width="*"/>
                     <DataGridTextColumn Header="Urgence" Binding="{Binding NvUrgency}"/>
                     <DataGridTextColumn Header="État" Binding="{Binding State}"/>
-                    <DataGridTextColumn Header="Niveau" Binding="{Binding Level}"/>
+                    <DataGridTextColumn Header="Niveau" Binding="{Binding InterventionLevel}"/>
                     <DataGridTextColumn Header="Créé le" Binding="{Binding Timestamp, StringFormat=dd/MM/yyyy HH:mm}"/>
                     <DataGridTemplateColumn Header="">
                         <DataTemplate>

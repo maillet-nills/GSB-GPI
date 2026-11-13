@@ -11,24 +11,28 @@ namespace GSB_GPI.ViewModels;
 public partial class TicketViewModel : ViewModelBase
 {
     public event Action? CreateRequested;
+    public event Action? NoTicketsRequested;
     public ObservableCollection<Ticket> Items { get; set; } = new();
-    
+
     public string[] Levels { get; } = { "Tous", "N1", "N1.5", "N2", "N3" };
-    
+
     [ObservableProperty] private string _selectedLevel = "Tous";
 
     public TicketViewModel()
     {
         LoadData();
     }
-    
+
     public void LoadData()
     {
-        using (var context = new GsbGPIDbContext())
+
+        Items = new ObservableCollection<Ticket>(DbToolBox.LoadTickets());
+
+        if (Items.Count == 0)
         {
-            Items = new ObservableCollection<Ticket>(context.Tickets.ToList());
-            
+	        NoTicketsRequested?.Invoke();
         }
+
     }
 
     [RelayCommand]

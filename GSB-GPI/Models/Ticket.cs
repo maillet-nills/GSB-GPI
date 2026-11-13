@@ -31,13 +31,13 @@ public class Ticket
 	public Technician Technician { get; set; }
 
     public Ticket(){}
-    public Ticket(int idTicket, string subject, Urgency nvUrgency, State state, DateTime timestamp, Equipment equipment, User user, Technician technician, Level interventionLevel)
+    public Ticket(int idTicket, string subject, Urgency nvUrgency, State state, Equipment equipment, User user, Technician technician, Level interventionLevel)
     {
         IdTicket = idTicket;
         Subject = subject;
         NvUrgency = nvUrgency;
         State = state;
-        Timestamp = timestamp;
+        Timestamp = DateTime.UtcNow;
         Equipment = equipment;
         User = user;
         Technician = technician;

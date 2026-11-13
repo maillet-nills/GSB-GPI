@@ -12,6 +12,7 @@ namespace GSB_GPI.ViewModels;
 public partial class InventoryViewModel : ViewModelBase
 {
     public event Action? CreateRequested;
+    public event Action? NoEquipmentsRequested;
     public ObservableCollection<Equipment> Items { get; set; } = new();
 
     public string[] Kinds { get; } = { "Tous", "Poste de travail", "Serveur", "Équipement réseau" };
@@ -36,14 +37,16 @@ public partial class InventoryViewModel : ViewModelBase
         OnPropertyChanged(nameof(FilteredItems));
         OnPropertyChanged(nameof(IsEmpty));
     }
-    
+
     public void LoadData()
     {
-        using (var context = new GsbGPIDbContext())
-        {
-            Items = new ObservableCollection<Equipment>(context.Equipments.ToList());
-            
-        }
+	    Items = new ObservableCollection<Equipment>(DbToolBox.LoadEquipments().ToList());
+
+	    if (Items.Count == 0)
+	    {
+		    NoEquipmentsRequested?.Invoke();
+	    }
+
     }
 
     [RelayCommand]

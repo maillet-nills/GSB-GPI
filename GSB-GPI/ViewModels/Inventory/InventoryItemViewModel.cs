@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using GSB_GPI.Data;
+using GSB_GPI.Models;
 
 namespace GSB_GPI.ViewModels;
 
@@ -41,18 +42,29 @@ public partial class InventoryItemViewModel : ViewModelBase
     [ObservableProperty] private string _version = "1.0.0";
     [ObservableProperty] private int _ram;
     [ObservableProperty] private int _diskVolumeInt;
-    [ObservableProperty] private string _diskVolumeString;
+    [ObservableProperty] private string _diskVolumeString; //A supprimer !
     [ObservableProperty] private string _os;
+
+    public User SelectedUser { get; set; }
+    public List<User> UsersList { get; set; }
+
+    public InventoryItemViewModel()
+    {
+	    LoadUsers();
+    }
+
+    public void LoadUsers()
+    {
+	    UsersList = DbToolBox.getAllUsers();
+    }
 
     [RelayCommand]
     private void Save()
     {
-	    using (var context = new GsbGPIDbContext())
-	    {
-		    context.CreateEquipment(IdGsb,Brand,Model,PurchaseDate,Rental,Guarantee,Provider,Type,Processor,Version,Ram,DiskVolumeInt,DiskVolumeInt,Os,SelectedType);
+		    DbToolBox.CreateEquipment(IdGsb,Brand,Model,PurchaseDate,Rental,Guarantee,Provider,Type,Processor,Version,Ram,DiskVolumeInt,Os,SelectedType,SelectedUser);
 		    Console.WriteLine("Saved Successfully");
 		    //MessageBox à implémenter
-	    }
+
         CloseRequested?.Invoke();
     }
 
