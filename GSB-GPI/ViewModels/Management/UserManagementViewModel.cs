@@ -56,6 +56,7 @@ public partial class UserManagementViewModel : ViewModelBase
         if (user.IdUser == UserSession.CurrentUser.IdUser)
         {
             ErrorMessage = "Vous ne pouvez pas supprimer votre propre compte.";
+            DbToolBox.AddLog("WARNING", $"Suppression refusée, un utilisateur ne peut pas supprimer son propre compte : {user.Email}");
             Console.WriteLine("Delete refused: a user cannot delete their own account.");
             return;
         }
@@ -67,6 +68,7 @@ public partial class UserManagementViewModel : ViewModelBase
         catch (DbUpdateException)
         {
             ErrorMessage = "Suppression impossible : cet utilisateur est lié à des tickets ou à du matériel.";
+            DbToolBox.AddLog("ERROR", $"Suppression impossible, utilisateur lié à des tickets ou à du matériel : {user.Email}, par {UserSession.CurrentUser?.Email}");
             Console.WriteLine($"Delete failed: user {user.IdUser} is still referenced by tickets or equipment.");
             return;
         }

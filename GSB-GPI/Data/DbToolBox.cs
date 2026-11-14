@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Net;
-using System.Net.Sockets;
+using System.Net.Http;
 using GSB_GPI.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,22 +10,36 @@ namespace GSB_GPI.Data;
 
 public static class DbToolBox
 {
+	private static string? _publicIp;
+
 	//Methods
 
 	public static void AddLog(string type, string message, string? username = null)
 	{
 		using (var context = new GsbGPIDbContext())
 		{
-			string? ip = Dns.GetHostAddresses(Dns.GetHostName())
-				.FirstOrDefault(a => a.AddressFamily == AddressFamily.InterNetwork && !IPAddress.IsLoopback(a))
-				?.ToString();
+			if (_publicIp == null)
+			{
+				try
+				{
+					using (var http = new HttpClient())
+					{
+						http.Timeout = TimeSpan.FromSeconds(3);
+						_publicIp = http.GetStringAsync("https://api.ipify.org").GetAwaiter().GetResult().Trim();
+					}
+				}
+				catch (Exception)
+				{
+					_publicIp = null;
+				}
+			}
 
 			if (username == null && UserSession.CurrentUser != null)
 			{
 				username = $"{UserSession.CurrentUser.FirstName} {UserSession.CurrentUser.LastName}";
 			}
 
-			var newLog = new Log(type, message, ip, username);
+			var newLog = new Log(type, message, _publicIp, username);
 			context.Logs.Add(newLog);
 			context.SaveChanges();
 
@@ -104,13 +117,13 @@ public static class DbToolBox
 
 			context.SaveChanges();
 
-			if (role.Contains("Technicien"))
+			if (UserSession.CurrentUser != null)
 			{
-				AddLog("INFO", $"Nouvel utilisateur Technicien créé : {email}", $"{firstName} {lastName}");
+				AddLog("INFO", $"Nouvel utilisateur créé : {email}, rôle {role}, par {UserSession.CurrentUser.Email}");
 			}
 			else
 			{
-				AddLog("INFO", $"Nouvel utilisateur créé : {email}", $"{firstName} {lastName}");
+				AddLog("INFO", $"Nouvel utilisateur créé par inscription : {email}, rôle {role}", $"{firstName} {lastName}");
 			}
 
 			return true;
@@ -216,7 +229,12 @@ public static class DbToolBox
 
 			db.Add(equipment);
 			db.SaveChanges();
-			AddLog("INFO", $"Équipement créé : {idGsb} ({brand} {model})");
+			AddLog("INFO", $"Équipement créé : {idGsb} ({brand} {model}), type {selectedtype}, par {UserSession.CurrentUser?.Email}");
+
+			if (existingUser != null)
+			{
+				AddLog("INFO", $"Matériel {idGsb} attribué à {existingUser.Email} par {UserSession.CurrentUser?.Email}");
+			}
 		}
 	}
 
@@ -280,7 +298,12 @@ public static class DbToolBox
 
 			db.Tickets.Add(ticket);
 			db.SaveChanges();
-			AddLog("INFO", $"Ticket créé : #{ticket.IdTicket} {subject}");
+			AddLog("INFO", $"Ticket créé : #{ticket.IdTicket} {subject}, pour {existingUser.Email}, équipement {existingEquipment?.IdGsb ?? "aucun"}, urgence {urgency}, niveau {level}, état {state}, par {UserSession.CurrentUser?.Email}");
+
+			if (existingTechnician != null)
+			{
+				AddLog("INFO", $"Ticket #{ticket.IdTicket} assigné au technicien {existingTechnician.Email} par {UserSession.CurrentUser?.Email}");
+			}
 		}
 	}
 
@@ -321,7 +344,7 @@ public static class DbToolBox
 		{
 			db.Tickets.Remove(SelectedTicket);
 			db.SaveChanges();
-			AddLog("WARNING", $"Ticket supprimé : #{SelectedTicket.IdTicket} {SelectedTicket.Subject}");
+			AddLog("WARNING", $"Ticket supprimé : #{SelectedTicket.IdTicket} {SelectedTicket.Subject}, état {SelectedTicket.State}, pour {SelectedTicket.User?.Email}, par {UserSession.CurrentUser?.Email}");
 		}
 	}
 
@@ -331,7 +354,7 @@ public static class DbToolBox
 		{
 			db.Users.Remove(SelectedUser);
 			db.SaveChanges();
-			AddLog("WARNING", $"Utilisateur supprimé : {SelectedUser.Email}");
+			AddLog("WARNING", $"Utilisateur supprimé : {SelectedUser.Email}, rôle {SelectedUser.Role}, par {UserSession.CurrentUser?.Email}");
 		}
 	}
 
@@ -341,7 +364,7 @@ public static class DbToolBox
 		{
 			db.Equipments.Remove(SelectedEquipment);
 			db.SaveChanges();
-			AddLog("WARNING", $"Équipement supprimé : {SelectedEquipment.IdGsb} ({SelectedEquipment.Brand} {SelectedEquipment.Model})");
+			AddLog("WARNING", $"Équipement supprimé : {SelectedEquipment.IdGsb} ({SelectedEquipment.Brand} {SelectedEquipment.Model}), attribué à {SelectedEquipment.User?.Email ?? "personne"}, par {UserSession.CurrentUser?.Email}");
 		}
 	}
 
@@ -423,10 +446,25 @@ public static class DbToolBox
 	{
 		using (var context = new GsbGPIDbContext())
 		{
-			var equipment = context.Equipments.FirstOrDefault(e => e.Id == selectedEquipment.Id);
-			if (equipment == null) return;
+			var equipment = context.Equipments.Include(e => e.User).FirstOrDefault(e => e.Id == selectedEquipment.Id);
+			if (equipment == null)
+			{
+				AddLog("ERROR", $"Modification impossible, équipement introuvable dans la BD : {selectedEquipment.IdGsb}");
+				return;
+			}
 
+			var oldUser = equipment.User;
 			var existingUser = userSelected != null ? context.Users.Find(userSelected.IdUser) : null;
+
+			//save change si ancienne valeur (en base) est différente de la nouvelle
+			var changes = new List<string>();
+			
+			if (equipment.IdGsb != idGsb) changes.Add($"IdGsb : {equipment.IdGsb} -> {idGsb}");
+			if (equipment.Brand != brand) changes.Add($"Brand : {equipment.Brand} -> {brand}");
+			if (equipment.Model != model) changes.Add($"Model : {equipment.Model} -> {model}");
+			if (equipment.Rental != rental) changes.Add($"Rental : {equipment.Rental} -> {rental}");
+			if (equipment.Guarantee != guarantee) changes.Add($"Guarantee : {equipment.Guarantee} -> {guarantee}");
+			if (equipment.Provider != provider) changes.Add($"Provider : {equipment.Provider} -> {provider}");
 
 			equipment.IdGsb = idGsb;
 			equipment.Brand = brand;
@@ -439,6 +477,12 @@ public static class DbToolBox
 			switch (equipment)
 			{
 				case Server server:
+					
+					if (server.Version != version) changes.Add($"Version : {server.Version} -> {version}");
+					if (server.Processor != processor) changes.Add($"Processor : {server.Processor} -> {processor}");
+					if (server.Ram != ram) changes.Add($"Ram : {server.Ram} -> {ram}");
+					if (server.DiskVolume != diskVolumeInt) changes.Add($"DiskVolume : {server.DiskVolume} -> {diskVolumeInt}");
+					
 					server.Version = version;
 					server.Processor = processor;
 					server.Ram = ram;
@@ -446,6 +490,12 @@ public static class DbToolBox
 					break;
 
 				case Workstation workstation:
+					
+					if (workstation.Processor != processor) changes.Add($"Processor : {workstation.Processor} -> {processor}");
+					if (workstation.Os != os) changes.Add($"Os : {workstation.Os} -> {os}");
+					if (workstation.Ram != ram) changes.Add($"Ram : {workstation.Ram} -> {ram}");
+					if (workstation.DiskVolume != diskVolumeInt) changes.Add($"DiskVolume : {workstation.DiskVolume} -> {diskVolumeInt}");
+
 					workstation.Processor = processor;
 					workstation.Os = os;
 					workstation.Ram = ram;
@@ -453,12 +503,35 @@ public static class DbToolBox
 					break;
 
 				case NetEquipment netEquipment:
+					if (netEquipment.Type != netType) changes.Add($"Type : {netEquipment.Type} -> {netType}");
 					netEquipment.Type = netType;
 					break;
 			}
 
 			context.SaveChanges();
-			AddLog("INFO", $"Équipement modifié : {idGsb} ({brand} {model})");
+
+			//Pas de log si rien n'a changé
+			if (changes.Count > 0)
+			{
+				AddLog("INFO", $"Équipement modifié : {idGsb} ({string.Join(", ", changes)}), par {UserSession.CurrentUser?.Email}");
+			}
+
+			//Changement d'attribution (séparé du reste)
+			if (oldUser?.IdUser != existingUser?.IdUser)
+			{
+				if (oldUser == null)
+				{
+					AddLog("INFO", $"Matériel {idGsb} attribué à {existingUser.Email} par {UserSession.CurrentUser?.Email}");
+				}
+				else if (existingUser == null)
+				{
+					AddLog("INFO", $"Matériel {idGsb} retiré à {oldUser.Email} par {UserSession.CurrentUser?.Email}");
+				}
+				else
+				{
+					AddLog("INFO", $"Matériel {idGsb} réattribué de {oldUser.Email} à {existingUser.Email} par {UserSession.CurrentUser?.Email}");
+				}
+			}
 
 		}}
 
@@ -501,12 +574,34 @@ public static class DbToolBox
 	{
 		using (var context = new GsbGPIDbContext())
 		{
-			var ticket = context.Tickets.FirstOrDefault(t => t.IdTicket == SelectedTicket.IdTicket);
-			if (ticket == null) return;
+			var ticket = context.Tickets
+				.Include(t => t.User)
+				.Include(t => t.Technician)
+				.Include(t => t.Equipment)
+				.FirstOrDefault(t => t.IdTicket == SelectedTicket.IdTicket);
+			if (ticket == null)
+			{
+				AddLog("ERROR", $"Modification impossible, ticket introuvable dans la BD : #{SelectedTicket.IdTicket}");
+				return;
+			}
+
+			var oldUser = ticket.User;
+			var oldTechnician = ticket.Technician;
+			var oldEquipment = ticket.Equipment;
 
 			var existingEquipment = Selectedequipment != null ? context.Equipments.Find(Selectedequipment.Id) : null;
 			var existingUser = Selecteduser != null ? context.Users.Find(Selecteduser.IdUser) : null;
 			var existingTechnician = SelectedTechnician != null ? context.Technicians.Find(SelectedTechnician.IdUser) : null;
+
+			//save change si ancienne valeur différente de la nouvelle
+			var changes = new List<string>();
+			
+			if (ticket.Subject != subject) changes.Add($"Subject : {ticket.Subject} -> {subject}");
+			if (ticket.NvUrgency != SelectedUrgency) changes.Add($"NvUrgency : {ticket.NvUrgency} -> {SelectedUrgency}");
+			if (ticket.State != SelectedState) changes.Add($"State : {ticket.State} -> {SelectedState}");
+			if (ticket.InterventionLevel != SelectedLevel) changes.Add($"InterventionLevel : {ticket.InterventionLevel} -> {SelectedLevel}");
+			if (oldUser?.IdUser != existingUser?.IdUser) changes.Add($"utilisateur : {oldUser?.Email ?? "aucun"} -> {existingUser?.Email ?? "aucun"}");
+			if (oldEquipment?.Id != existingEquipment?.Id) changes.Add($"équipement : {oldEquipment?.IdGsb ?? "aucun"} -> {existingEquipment?.IdGsb ?? "aucun"}");
 
 			ticket.Subject = subject;
 			ticket.Equipment = existingEquipment;
@@ -517,7 +612,28 @@ public static class DbToolBox
 			ticket.InterventionLevel = SelectedLevel;
 
 			context.SaveChanges();
-			AddLog("INFO", $"Ticket modifié : #{ticket.IdTicket} {subject}, état {SelectedState}");
+
+			if (changes.Count > 0)
+			{
+				AddLog("INFO", $"Ticket modifié : #{ticket.IdTicket} ({string.Join(", ", changes)}), par {UserSession.CurrentUser?.Email}");
+			}
+
+			//Assignation du technicien (séparé du reste)
+			if (oldTechnician?.IdUser != existingTechnician?.IdUser)
+			{
+				if (oldTechnician == null)
+				{
+					AddLog("INFO", $"Ticket #{ticket.IdTicket} assigné au technicien {existingTechnician.Email} par {UserSession.CurrentUser?.Email}");
+				}
+				else if (existingTechnician == null)
+				{
+					AddLog("INFO", $"Ticket #{ticket.IdTicket} retiré au technicien {oldTechnician.Email} par {UserSession.CurrentUser?.Email}");
+				}
+				else
+				{
+					AddLog("INFO", $"Ticket #{ticket.IdTicket} réassigné de {oldTechnician.Email} à {existingTechnician.Email} par {UserSession.CurrentUser?.Email}");
+				}
+			}
 		}
 	}
 

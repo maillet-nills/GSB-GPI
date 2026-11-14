@@ -107,6 +107,7 @@ public partial class ShellViewModel : ViewModelBase
     [RelayCommand]
     private void Logout()
     {
+        DbToolBox.AddLog("INFO", $"Déconnexion, utilisateur : {UserSession.CurrentUser?.Email}");
         LogoutRequested?.Invoke();
     }
 }
