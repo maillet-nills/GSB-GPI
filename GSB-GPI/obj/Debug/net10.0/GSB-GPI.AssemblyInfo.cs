@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("GSB-GPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+000ee4714e0bc3e36b07901fa977fbe66b188c91")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+197031b8580e0ca3b443252493d4a67556f58f44")]
 [assembly: System.Reflection.AssemblyProductAttribute("GSB-GPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("GSB-GPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
