@@ -12,6 +12,7 @@ namespace GSB_GPI.ViewModels;
 public partial class InventoryViewModel : ViewModelBase
 {
     public event Action? CreateRequested;
+    public event Action<Equipment>? EditRequested;
     public event Action? NoEquipmentsRequested;
     public ObservableCollection<Equipment> Items { get; set; } = new();
 
@@ -19,6 +20,8 @@ public partial class InventoryViewModel : ViewModelBase
 
     [ObservableProperty]
     private string _selectedKind = "Tous";
+
+    [ObservableProperty] private bool _isTechnician = DbToolBox.IsTechnician();
 
     public IEnumerable<Equipment> FilteredItems =>
         SelectedKind == "Tous" ? Items : Items.Where(e => e.Category == SelectedKind);
@@ -56,7 +59,8 @@ public partial class InventoryViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private void Edit(Equipment item)
+    private void Edit(Equipment? item = null)
     {
+        EditRequested?.Invoke(item);
     }
 }

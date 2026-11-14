@@ -3,18 +3,144 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:GSB_GPI.ViewModels"
-             mc:Ignorable="d" d:DesignWidth="570" d:DesignHeight="450"
+             xmlns:icons="https://github.com/projektanker/icons.avalonia"
+             mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="600"
              x:Class="GSB_GPI.Views.DashboardView"
              x:DataType="vm:DashboardViewModel"
              Background="White">
 
-    <StackPanel Margin="40,36" Spacing="6">
-        <TextBlock Text="Tableau de bord"
+    <DockPanel Margin="40,36">
+        <TextBlock DockPanel.Dock="Top"
+                   Text="Dashboard"
                    Foreground="#1F1F1F"
                    FontSize="32"
-                   FontWeight="Bold"/>
-        <TextBlock Text="Contenu à venir"
-                   Foreground="#6B6B6B"
-                   FontSize="16"/>
-    </StackPanel>
+                   FontWeight="Bold"
+                   Margin="0,0,0,20"/>
+
+        <Grid ColumnDefinitions="*, *, *" ColumnSpacing="20">
+
+            <Border Grid.Column="0" Background="#1F3A6E" CornerRadius="8" Padding="20">
+                <StackPanel Spacing="20">
+                    <TextBlock Text="Statistiques :"
+                               Foreground="White"
+                               FontSize="20"
+                               FontWeight="Bold"
+                               HorizontalAlignment="Center"/>
+
+                    <Border Background="White" CornerRadius="8" Padding="14">
+                        <Grid ColumnDefinitions="*, Auto">
+                            <StackPanel Grid.Column="0" Spacing="2">
+                                <TextBlock Text="Total matériels :" Foreground="#6B6B6B" FontSize="12"/>
+                                <TextBlock Text="{Binding TotalEquipments}"
+                                           Foreground="#1F1F1F"
+                                           FontSize="36"
+                                           FontWeight="Bold"/>
+                            </StackPanel>
+                            <icons:Icon Grid.Column="1"
+                                        Value="fa-solid fa-desktop"
+                                        FontSize="22"
+                                        Foreground="#1F1F1F"
+                                        VerticalAlignment="Top"/>
+                        </Grid>
+                    </Border>
+
+                    <Separator Background="#6B8CEF" Margin="30,0"/>
+
+                    <Border Background="White" CornerRadius="8" Padding="14">
+                        <Grid ColumnDefinitions="*, Auto">
+                            <StackPanel Grid.Column="0" Spacing="2">
+                                <TextBlock Text="Total tickets :" Foreground="#6B6B6B" FontSize="12"/>
+                                <TextBlock Text="{Binding TotalTickets}"
+                                           Foreground="#1F1F1F"
+                                           FontSize="36"
+                                           FontWeight="Bold"/>
+                            </StackPanel>
+                            <icons:Icon Grid.Column="1"
+                                        Value="fa-solid fa-clipboard"
+                                        FontSize="22"
+                                        Foreground="#1F1F1F"
+                                        VerticalAlignment="Top"/>
+                        </Grid>
+                    </Border>
+                </StackPanel>
+            </Border>
+
+            <Border Grid.Column="1"
+                    Background="White"
+                    BorderBrush="#E0E0E0"
+                    BorderThickness="1"
+                    CornerRadius="8"
+                    Padding="20">
+                <DockPanel>
+                    <TextBlock DockPanel.Dock="Top"
+                               Text="Aperçu du parc :"
+                               Foreground="#1F1F1F"
+                               FontSize="20"
+                               FontWeight="Bold"
+                               HorizontalAlignment="Center"
+                               Margin="0,0,0,12"/>
+
+                    <ItemsControl ItemsSource="{Binding ParkItems}" VerticalAlignment="Center">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="vm:ParkItem">
+                                <StackPanel Spacing="4" Margin="0,0,0,16">
+                                    <Grid ColumnDefinitions="*, Auto">
+                                        <TextBlock Grid.Column="0" Text="{Binding Label}" Foreground="#1F1F1F" FontSize="13"/>
+                                        <TextBlock Grid.Column="1" Text="{Binding Count}" Foreground="#1F1F1F" FontWeight="Bold" FontSize="13"/>
+                                    </Grid>
+                                    <ProgressBar Minimum="0"
+                                                 Maximum="{Binding Total}"
+                                                 Value="{Binding Count}"
+                                                 Foreground="{Binding Color}"
+                                                 Background="#E5E7EB"
+                                                 Height="14"
+                                                 CornerRadius="7"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </DockPanel>
+            </Border>
+
+            <Border Grid.Column="2"
+                    Background="White"
+                    BorderBrush="#E0E0E0"
+                    BorderThickness="1"
+                    CornerRadius="8"
+                    Padding="20">
+                <DockPanel>
+                    <TextBlock DockPanel.Dock="Top"
+                               Text="Tickets récents :"
+                               Foreground="#1F1F1F"
+                               FontSize="20"
+                               FontWeight="Bold"
+                               HorizontalAlignment="Center"
+                               Margin="0,0,0,16"/>
+
+                    <StackPanel DockPanel.Dock="Top" Spacing="4" Margin="0,0,0,12">
+                        <TextBlock Text="État" Foreground="#6B6B6B" FontSize="12"/>
+                        <ComboBox ItemsSource="{Binding States}"
+                                  SelectedItem="{Binding SelectedState}"
+                                  HorizontalAlignment="Stretch"/>
+                    </StackPanel>
+
+                    <DataGrid x:CompileBindings="False"
+                              ItemsSource="{Binding RecentTickets}"
+                              IsReadOnly="True"
+                              AutoGenerateColumns="False"
+                              HeadersVisibility="Column"
+                              GridLinesVisibility="All"
+                              BorderThickness="1"
+                              BorderBrush="#E0E0E0"
+                              ColumnHeaderHeight="32"
+                              RowHeight="36">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Urgence" Binding="{Binding NvUrgency}"/>
+                            <DataGridTextColumn Header="Objet" Binding="{Binding Subject}" Width="*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
+            </Border>
+        </Grid>
+    </DockPanel>
 </UserControl>

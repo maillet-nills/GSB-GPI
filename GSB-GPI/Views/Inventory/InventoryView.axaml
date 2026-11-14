@@ -24,6 +24,21 @@
             <Setter Property="Background" Value="#1F7342"/>
             <Setter Property="Foreground" Value="White"/>
         </Style>
+        <Style Selector="Button.modify">
+            <Setter Property="Background" Value="#2A7EF5"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="16,6"/>
+            <Setter Property="CornerRadius" Value="6"/>
+        </Style>
+        <Style Selector="Button.modify:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#D1D5DB"/>
+            <Setter Property="Foreground" Value="#1F1F1F"/>
+        </Style>
+        <Style Selector="Button.modify:pressed /template/ ContentPresenter">
+            <Setter Property="Background" Value="#9CA3AF"/>
+            <Setter Property="Foreground" Value="#1F1F1F"/>
+        </Style>
     </UserControl.Styles>
 
     <DockPanel Margin="40,36">
@@ -48,6 +63,7 @@
                       MinWidth="200"
                       Margin="10,0,0,0"/>
             <Button Grid.Column="3"
+                    IsVisible="{Binding IsTechnician}"
                     Classes="add"
                     Content="+ Nouveau matériel"
                     Command="{Binding CreateCommand}"
@@ -74,9 +90,10 @@
                     <DataGridTextColumn Header="Fournisseur" Binding="{Binding Provider}"/>
                     <DataGridCheckBoxColumn Header="Location" Binding="{Binding Rental}"/>
                     <DataGridCheckBoxColumn Header="Garantie" Binding="{Binding Guarantee}"/>
-                    <DataGridTemplateColumn Header="">
+                    <DataGridTemplateColumn Header="" IsVisible="{Binding IsTechnician}">
                         <DataTemplate>
-                            <Button Content="Modifier"
+                            <Button Classes="modify"
+                                    Content="Modifier"
                                     Command="{Binding $parent[DataGrid].DataContext.EditCommand}"
                                     CommandParameter="{Binding}"/>
                         </DataTemplate>

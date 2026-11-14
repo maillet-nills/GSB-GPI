@@ -1,0 +1,117 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:GSB_GPI.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="450"
+             x:Class="GSB_GPI.Views.UserManagementView"
+             x:DataType="vm:UserManagementViewModel"
+             Background="White">
+
+    <UserControl.Styles>
+        <Style Selector="Button.add">
+            <Setter Property="Background" Value="#2E9E5B"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="16,8"/>
+            <Setter Property="CornerRadius" Value="6"/>
+        </Style>
+        <Style Selector="Button.add:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#268A4E"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+        <Style Selector="Button.add:pressed /template/ ContentPresenter">
+            <Setter Property="Background" Value="#1F7342"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+        <Style Selector="Button.delete">
+            <Setter Property="Background" Value="#E81733"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="16,6"/>
+            <Setter Property="CornerRadius" Value="6"/>
+        </Style>
+        <Style Selector="Button.delete:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#C9132C"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+        <Style Selector="Button.delete:pressed /template/ ContentPresenter">
+            <Setter Property="Background" Value="#A90F24"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+    </UserControl.Styles>
+
+    <DockPanel Margin="40,36">
+        <StackPanel DockPanel.Dock="Top" Spacing="6" Margin="0,0,0,20">
+            <TextBlock Text="Utilisateurs"
+                       Foreground="#1F1F1F"
+                       FontSize="32"
+                       FontWeight="Bold"/>
+            <TextBlock Text="Gestion des comptes"
+                       Foreground="#6B6B6B"
+                       FontSize="16"/>
+        </StackPanel>
+
+        <Grid DockPanel.Dock="Top" ColumnDefinitions="Auto,Auto,*,Auto" Margin="0,0,0,12">
+            <TextBlock Grid.Column="0"
+                       Text="Rôle"
+                       Foreground="#6B6B6B"
+                       VerticalAlignment="Center"/>
+            <ComboBox Grid.Column="1"
+                      ItemsSource="{Binding Roles}"
+                      SelectedItem="{Binding SelectedRole}"
+                      MinWidth="200"
+                      Margin="10,0,0,0"/>
+            <Button Grid.Column="3"
+                    Classes="add"
+                    Content="+ Nouvel utilisateur"
+                    Command="{Binding CreateCommand}"
+                    VerticalAlignment="Center"/>
+        </Grid>
+
+        <TextBlock DockPanel.Dock="Top"
+                   Text="{Binding ErrorMessage}"
+                   IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                   Foreground="#E81733"
+                   FontSize="13"
+                   Margin="0,0,0,12"/>
+
+        <Grid>
+            <DataGrid x:CompileBindings="False"
+                      ItemsSource="{Binding FilteredItems}"
+                      IsReadOnly="True"
+                      AutoGenerateColumns="False"
+                      HeadersVisibility="Column"
+                      GridLinesVisibility="All"
+                      BorderThickness="1"
+                      BorderBrush="#E0E0E0"
+                      ColumnHeaderHeight="36"
+                      RowHeight="40">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="N°" Binding="{Binding IdUser}"/>
+                    <DataGridTextColumn Header="Nom" Binding="{Binding LastName}" Width="*"/>
+                    <DataGridTextColumn Header="Prénom" Binding="{Binding FirstName}" Width="*"/>
+                    <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="2*"/>
+                    <DataGridTextColumn Header="Rôle" Binding="{Binding Role}"/>
+                    <DataGridTemplateColumn Header="">
+                        <DataTemplate>
+                            <Button Classes="delete"
+                                    Content="Supprimer"
+                                    Command="{Binding $parent[DataGrid].DataContext.DeleteCommand}"
+                                    CommandParameter="{Binding}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <Border IsVisible="{Binding IsEmpty}"
+                    IsHitTestVisible="False"
+                    VerticalAlignment="Top"
+                    Margin="1,37,1,0"
+                    Height="40"
+                    Background="White"
+                    BorderBrush="#E0E0E0"
+                    BorderThickness="0,0,0,1"/>
+        </Grid>
+    </DockPanel>
+</UserControl>

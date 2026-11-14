@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using GSB_GPI.Data;
@@ -9,6 +10,7 @@ namespace GSB_GPI.ViewModels;
 
 public partial class InventoryItemViewModel : ViewModelBase
 {
+    private Equipment? _equipmentToEdit;
     public event Action? CloseRequested;
 
     public List<string> EquipmentTypes { get; } = new()
@@ -41,16 +43,49 @@ public partial class InventoryItemViewModel : ViewModelBase
     [ObservableProperty] private string _processor;
     [ObservableProperty] private string _version = "1.0.0";
     [ObservableProperty] private int _ram;
-    [ObservableProperty] private int _diskVolumeInt;
-    [ObservableProperty] private string _diskVolumeString; //A supprimer !
+    [ObservableProperty] private int? _diskVolumeInt;
     [ObservableProperty] private string _os;
 
-    public User SelectedUser { get; set; }
+    [ObservableProperty] private User? _selectedUser;
     public List<User> UsersList { get; set; }
 
-    public InventoryItemViewModel()
+    public InventoryItemViewModel(Equipment?  equipment = null)
     {
+        _equipmentToEdit = equipment;
 	    LoadUsers();
+        if (_equipmentToEdit != null)
+        {
+            IdGsb = _equipmentToEdit.IdGsb;
+            Brand = _equipmentToEdit.Brand;
+            Model = _equipmentToEdit.Model;
+            PurchaseDate = _equipmentToEdit.PurchaseDate;
+            Rental = _equipmentToEdit.Rental;
+            Guarantee = _equipmentToEdit.Guarantee;
+            Provider = _equipmentToEdit.Provider;
+            SelectedUser = UsersList.FirstOrDefault(u => u.IdUser == _equipmentToEdit.User?.IdUser);
+
+            if (_equipmentToEdit is NetEquipment net)
+            {
+                SelectedType = "Équipement réseau";
+                Type = net.Type;
+            }
+            else if (_equipmentToEdit is Workstation ws)
+            {
+                SelectedType = "Poste de travail";
+                Processor = ws.Processor;
+                Ram = (int)ws.Ram;
+                DiskVolumeInt = ws.DiskVolume;
+                Os = ws.Os;
+            }
+            else if (_equipmentToEdit is Server srv)
+            {
+                SelectedType = "Serveur";
+                Version = srv.Version;
+                Processor = srv.Processor;
+                Ram = (int)srv.Ram;
+                DiskVolumeInt = srv.DiskVolume;
+            }
+        }
     }
 
     public void LoadUsers()
@@ -61,10 +96,26 @@ public partial class InventoryItemViewModel : ViewModelBase
     [RelayCommand]
     private void Save()
     {
-		    DbToolBox.CreateEquipment(IdGsb,Brand,Model,PurchaseDate,Rental,Guarantee,Provider,Type,Processor,Version,Ram,DiskVolumeInt,Os,SelectedType,SelectedUser);
-		    Console.WriteLine("Saved Successfully");
-		    //MessageBox à implémenter
+        //MessageBox à implémenter
+        if (_equipmentToEdit == null)
+        {
+            DbToolBox.CreateEquipment(IdGsb,Brand,Model,PurchaseDate,Rental,Guarantee,Provider,Type,Processor,Version,Ram,DiskVolumeInt ?? 0,Os,SelectedType,SelectedUser);
+            Console.WriteLine("Saved Successfully");
+        }
+        else
+        {
+            DbToolBox.UpdateEquipment(_equipmentToEdit, IdGsb, Brand, Model, Rental, Guarantee, Provider, SelectedUser,
+                Type, Version, Processor, Ram, DiskVolumeInt ?? 0, Os);
+            Console.WriteLine("Updated Successfully");
+        }
 
+        CloseRequested?.Invoke();
+    }
+
+    [RelayCommand]
+    private void Delete()
+    {
+        DbToolBox.DeleteEquipment(_equipmentToEdit);
         CloseRequested?.Invoke();
     }
 

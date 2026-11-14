@@ -24,6 +24,36 @@
             <Setter Property="Background" Value="#1F7342"/>
             <Setter Property="Foreground" Value="White"/>
         </Style>
+        <Style Selector="Button.delete">
+            <Setter Property="Background" Value="#E81733"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="16,6"/>
+            <Setter Property="CornerRadius" Value="6"/>
+        </Style>
+        <Style Selector="Button.delete:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#C9132C"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+        <Style Selector="Button.delete:pressed /template/ ContentPresenter">
+            <Setter Property="Background" Value="#A90F24"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+        <Style Selector="Button.modify">
+            <Setter Property="Background" Value="#2A7EF5"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="16,6"/>
+            <Setter Property="CornerRadius" Value="6"/>
+        </Style>
+        <Style Selector="Button.cancel:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#D1D5DB"/>
+            <Setter Property="Foreground" Value="#1F1F1F"/>
+        </Style>
+        <Style Selector="Button.cancel:pressed /template/ ContentPresenter">
+            <Setter Property="Background" Value="#9CA3AF"/>
+            <Setter Property="Foreground" Value="#1F1F1F"/>
+        </Style>
         <Style Selector="TextBox">
             <Setter Property="Height" Value="32"/>
             <Setter Property="MinHeight" Value="32"/>
@@ -71,7 +101,8 @@
                             <ComboBox ItemsSource="{Binding UsersList}"
                                       SelectedItem="{Binding SelectedUser}"
                                       PlaceholderText="Sélectionner un client"
-                                      HorizontalAlignment="Stretch">
+                                      HorizontalAlignment="Stretch"
+                                      IsEnabled="{Binding IsTechnician}">
                             </ComboBox>
                         </StackPanel>
 
@@ -80,7 +111,8 @@
                             <ComboBox ItemsSource="{Binding TechniciansList}"
                                       SelectedItem="{Binding SelectedTechnician}"
                                       PlaceholderText="Sélectionner un technicien"
-                                      HorizontalAlignment="Stretch">
+                                      HorizontalAlignment="Stretch"
+                                      IsEnabled="{Binding IsTechnician}">
                             </ComboBox>
                         </StackPanel>
                     </Grid>
@@ -110,7 +142,8 @@
         </Grid>
 
         <StackPanel Grid.Row="3" Orientation="Horizontal" Spacing="12" HorizontalAlignment="Right">
-            <Button Content="Annuler" Command="{Binding CancelCommand}" Padding="16,6"/>
+            <Button Classes="cancel" Content="Annuler" Command="{Binding CancelCommand}" Padding="16,6"/>
+            <Button Classes="delete" Content="Supprimer" Command="{Binding DeleteCommand}" Padding="16,6"/>
             <Button Classes="add" Content="Enregistrer" Command="{Binding SaveCommand}"/>
         </StackPanel>
 

@@ -28,10 +28,10 @@ public class Ticket
 
 	public User User { get; set; }
 	public Equipment? Equipment { get; set; }
-	public Technician Technician { get; set; }
+	public Technician? Technician { get; set; }
 
     public Ticket(){}
-    public Ticket(int idTicket, string subject, Urgency nvUrgency, State state, Equipment equipment, User user, Technician technician, Level interventionLevel)
+    public Ticket(int idTicket, string subject, Urgency nvUrgency, State state, Equipment equipment, User user, Technician? technician, Level interventionLevel)
     {
         IdTicket = idTicket;
         Subject = subject;

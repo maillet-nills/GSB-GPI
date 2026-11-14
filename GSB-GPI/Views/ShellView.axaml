@@ -24,6 +24,9 @@
         <DataTemplate DataType="vm:TicketViewModel">
             <views:TicketView/>
         </DataTemplate>
+        <DataTemplate DataType="vm:UserManagementViewModel">
+            <views:UserManagementView/>
+        </DataTemplate>
     </UserControl.DataTemplates>
 
     <UserControl.Styles>
@@ -70,7 +73,8 @@
             <StackPanel Grid.Row="1" Margin="12,0" Spacing="4">
                 <Button Classes="nav"
                         Classes.active="{Binding IsDashboardActive}"
-                        Command="{Binding ShowDashboardCommand}">
+                        Command="{Binding ShowDashboardCommand}"
+                        IsVisible="{Binding IsTechnician}">
                     <Grid ColumnDefinitions="26,*">
                         <i:Icon Value="fa-regular fa-clock"
                                 FontSize="14"
@@ -106,6 +110,21 @@
                                 VerticalAlignment="Center"/>
                         <TextBlock Grid.Column="1"
                                    Text="Incidents"
+                                   VerticalAlignment="Center"/>
+                    </Grid>
+                </Button>
+                
+                <Button Classes="nav"
+                        Classes.active="{Binding IsManagementActive}"
+                        Command="{Binding ShowUsersCommand}"
+                        IsVisible="{Binding IsAdmin}">
+                    <Grid ColumnDefinitions="26,*">
+                        <i:Icon Value="fa-regular fa-user"
+                                FontSize="14"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"/>
+                        <TextBlock Grid.Column="1"
+                                   Text="Management"
                                    VerticalAlignment="Center"/>
                     </Grid>
                 </Button>

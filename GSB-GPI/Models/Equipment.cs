@@ -35,13 +35,13 @@ public class Equipment
     [NotMapped]
     public virtual string Category => "Équipement";
 
-    public User User { get; set; }
+    public User? User { get; set; }
 
 
 
     public Equipment(){}
 
-    public Equipment(int id, string idGsb, string brand, string model, DateTime purchaseDate, bool rental, bool guarantee, string provider, DateTime createdAt,User user)
+    public Equipment(int id, string idGsb, string brand, string model, DateTime purchaseDate, bool rental, bool guarantee, string provider, DateTime createdAt,User? user)
     {
         Id = id;
         IdGsb = idGsb;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using GSB_GPI.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace GSB_GPI.Data;
 
@@ -61,7 +62,6 @@ public static class DbToolBox
 					FirstName = firstName
 
 				};
-				UserSession.CurrentUser = newTechnician;
 				AddLog("INFO", $"Nouvel utilisateur Technicien créé : {email}");
 				context.Users.Add(newTechnician);
 			}
@@ -77,7 +77,6 @@ public static class DbToolBox
 					FirstName = firstName,
 
 				};
-				UserSession.CurrentUser = newUser;
 				AddLog("INFO", $"Nouvel utilisateur créé : {email}");
 				context.Users.Add(newUser);
 			}
@@ -152,11 +151,11 @@ public static class DbToolBox
 	public static void CreateEquipment(
 		string idGsb, string brand, string model, DateTime purchaseDate,
 		bool rental, bool guarantee, string provider, string type,
-		string? processor, string version, int? ram, int diskVolumeInt, string? os, string selectedtype, User userselected)
+		string? processor, string version, int? ram, int diskVolumeInt, string? os, string selectedtype, User? userselected)
 	{
 		using (var db = new GsbGPIDbContext())
 		{
-			var existingUser = db.Users.Find((userselected?.IdUser));
+			var existingUser = userselected == null ? null : db.Users.Find((userselected?.IdUser));
 
 			Equipment equipment = selectedtype switch
 			{
@@ -209,11 +208,14 @@ public static class DbToolBox
 		{
 			if (UserSession.CurrentUser.Role.Contains("Technicien") || UserSession.CurrentUser.Role.Contains("Admin"))
 			{
-				 EquipmentsLoaded = context.Equipments.ToList();
+				 EquipmentsLoaded = context.Equipments
+					 .Include(u => u.User)
+					 .ToList();
 			}
 			else
 			{
 				EquipmentsLoaded = context.Equipments
+					.Include(u => u.User)
 					.Where(e=>e.User.IdUser==UserSession.CurrentUser.IdUser)
 					.ToList();
 			}
@@ -225,20 +227,21 @@ public static class DbToolBox
 	//Ticket methods
 
 	//Create ticket
-	public static void CreateTicket(string subject, User user, Technician technician, Urgency urgency, State state, Level level,Equipment equipment)
+	public static void CreateTicket(string subject, User user, Technician? technician, Urgency urgency, State state, Level level,Equipment? equipment)
 	{
 		using (var db = new GsbGPIDbContext())
 		{
 
 			var existingUser = db.Users.Find((user?.IdUser));
-			var existingTechnician = db.Technicians.Find((technician.IdUser));
-			var existingEquipment = db.Equipments.Find((equipment.Id));
+			var existingTechnician = technician == null ? null : db.Technicians.Find(technician.IdUser);
+			var existingEquipment = equipment == null ? null : db.Equipments.Find(equipment.Id);
 
-			if (existingUser == null || existingTechnician == null)
+			if (existingUser == null )
 			{
 				//Ajout d'une MessageBox bientot (normalement ce if devrait jamais arrivé c'est quasi impossible mais vaut mieut prévenir que guérir.)
 
 				Console.WriteLine("L'utilisateur séléctionné ne figure plus dans la BD.");
+				return;
 			}
 
 			var ticket = new Ticket
@@ -268,12 +271,19 @@ public static class DbToolBox
 		{
 			if (UserSession.CurrentUser.Role.Contains("Technicien") || UserSession.CurrentUser.Role.Contains("Admin"))
 			{
-				TicketsLoaded = context.Tickets.ToList();
+				TicketsLoaded = context.Tickets
+					.Include(t => t.User)
+					.Include(t => t.Technician)
+					.Include(t => t.Equipment)
+					.ToList();
 			}
 			else
 			{
 				TicketsLoaded = context.Tickets
-					.Where(e=>e.User.IdUser==UserSession.CurrentUser.IdUser)
+					.Include(t => t.User)
+					.Include(t => t.Technician)
+					.Include(t => t.Equipment)
+					.Where(e => e.User.IdUser == UserSession.CurrentUser.IdUser)
 					.ToList();
 			}
 

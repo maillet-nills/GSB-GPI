@@ -24,6 +24,21 @@
             <Setter Property="Background" Value="#1F7342"/>
             <Setter Property="Foreground" Value="White"/>
         </Style>
+        <Style Selector="Button.modify">
+            <Setter Property="Background" Value="#2A7EF5"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="16,6"/>
+            <Setter Property="CornerRadius" Value="6"/>
+        </Style>
+        <Style Selector="Button.cancel:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#D1D5DB"/>
+            <Setter Property="Foreground" Value="#1F1F1F"/>
+        </Style>
+        <Style Selector="Button.cancel:pressed /template/ ContentPresenter">
+            <Setter Property="Background" Value="#9CA3AF"/>
+            <Setter Property="Foreground" Value="#1F1F1F"/>
+        </Style>
     </UserControl.Styles>
 
     <DockPanel Margin="40,36">
@@ -56,7 +71,7 @@
 
         <Grid>
             <DataGrid x:CompileBindings="False"
-                      ItemsSource="{Binding Items}"
+                      ItemsSource="{Binding FilteredItems}"
                       IsReadOnly="True"
                       AutoGenerateColumns="False"
                       HeadersVisibility="Column"
@@ -72,9 +87,10 @@
                     <DataGridTextColumn Header="État" Binding="{Binding State}"/>
                     <DataGridTextColumn Header="Niveau" Binding="{Binding InterventionLevel}"/>
                     <DataGridTextColumn Header="Créé le" Binding="{Binding Timestamp, StringFormat=dd/MM/yyyy HH:mm}"/>
-                    <DataGridTemplateColumn Header="">
+                    <DataGridTemplateColumn Header="" IsVisible="{Binding IsTechnician}">
                         <DataTemplate>
-                            <Button Content="Modifier"
+                            <Button Classes="modify"
+                                    Content="Modifier"
                                     Command="{Binding $parent[DataGrid].DataContext.EditCommand}"
                                     CommandParameter="{Binding}"/>
                         </DataTemplate>
@@ -82,7 +98,7 @@
                 </DataGrid.Columns>
             </DataGrid>
 
-            <Border IsVisible="{Binding !Items.Count}"
+            <Border IsVisible="{Binding IsEmpty}"
                     IsHitTestVisible="False"
                     VerticalAlignment="Top"
                     Margin="1,37,1,0"
