@@ -20,11 +20,19 @@ public class Log
 	[Column("message")]
 	public string Message { get; set; } = "";
 
+	[Column("ip")]
+	public string? Ip { get; set; }
+
+	[Column("username")]
+	public string? Username { get; set; }
+
 	public Log() { }
 
-	public Log(string type, string message)
+	public Log(string type, string message, string? ip = null, string? username = null)
 	{
 		Type = type;
 		Message = message;
+		Ip = ip;
+		Username = username;
 	}
 }

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using GSB_GPI.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,6 +12,26 @@ namespace GSB_GPI.Data;
 public static class DbToolBox
 {
 	//Methods
+
+	public static void AddLog(string type, string message, string? username = null)
+	{
+		using (var context = new GsbGPIDbContext())
+		{
+			string? ip = Dns.GetHostAddresses(Dns.GetHostName())
+				.FirstOrDefault(a => a.AddressFamily == AddressFamily.InterNetwork && !IPAddress.IsLoopback(a))
+				?.ToString();
+
+			if (username == null && UserSession.CurrentUser != null)
+			{
+				username = $"{UserSession.CurrentUser.FirstName} {UserSession.CurrentUser.LastName}";
+			}
+
+			var newLog = new Log(type, message, ip, username);
+			context.Logs.Add(newLog);
+			context.SaveChanges();
+
+		}
+	}
 
 	//Register & Login methods
 	public static bool Register(string lastName, string firstName, string email, string password, string confirmPassword, string role)
@@ -26,6 +48,7 @@ public static class DbToolBox
 			}
 			else if (password != confirmPassword)
 			{
+				AddLog("WARNING", $"Tentative de Register échouée, mots de passe différents : {email}", $"{firstName} {lastName}");
 				//Ajout d'une alternative au MessageBox en cas de fail ? (Utilisateur déjà existant !)
 				return false;
 			}
@@ -62,7 +85,6 @@ public static class DbToolBox
 					FirstName = firstName
 
 				};
-				AddLog("INFO", $"Nouvel utilisateur Technicien créé : {email}");
 				context.Users.Add(newTechnician);
 			}
 
@@ -77,11 +99,20 @@ public static class DbToolBox
 					FirstName = firstName,
 
 				};
-				AddLog("INFO", $"Nouvel utilisateur créé : {email}");
 				context.Users.Add(newUser);
 			}
 
 			context.SaveChanges();
+
+			if (role.Contains("Technicien"))
+			{
+				AddLog("INFO", $"Nouvel utilisateur Technicien créé : {email}", $"{firstName} {lastName}");
+			}
+			else
+			{
+				AddLog("INFO", $"Nouvel utilisateur créé : {email}", $"{firstName} {lastName}");
+			}
+
 			return true;
 
 		}
@@ -103,12 +134,12 @@ public static class DbToolBox
 			bool isPasswordValid = BCrypt.Net.BCrypt.Verify(password, user.HashedPassword);
 			if (isPasswordValid)
 			{
-				AddLog("INFO", $"Login réussi, utilisateur : {email}");
+				AddLog("INFO", $"Login réussi, utilisateur : {email}", $"{user.FirstName} {user.LastName}");
 				UserSession.CurrentUser = user;
 			}
 			else
 			{
-				AddLog("WARNING", $"Tentative de Login échoué, mauvais mot de passe : {email}");
+				AddLog("WARNING", $"Tentative de Login échoué, mauvais mot de passe : {email}", $"{user.FirstName} {user.LastName}");
 			}
 
 			return isPasswordValid;
@@ -131,17 +162,6 @@ public static class DbToolBox
 		using (var context = new GsbGPIDbContext())
 		{
 			return context.Technicians.ToList();
-		}
-	}
-
-	public static void AddLog(string type, string message)
-	{
-		using (var context = new GsbGPIDbContext())
-		{
-			var newLog = new Log(type, message);
-			context.Logs.Add(newLog);
-			context.SaveChanges();
-
 		}
 	}
 
@@ -196,6 +216,7 @@ public static class DbToolBox
 
 			db.Add(equipment);
 			db.SaveChanges();
+			AddLog("INFO", $"Équipement créé : {idGsb} ({brand} {model})");
 		}
 	}
 
@@ -240,7 +261,7 @@ public static class DbToolBox
 			{
 				//Ajout d'une MessageBox bientot (normalement ce if devrait jamais arrivé c'est quasi impossible mais vaut mieut prévenir que guérir.)
 
-				Console.WriteLine("L'utilisateur séléctionné ne figure plus dans la BD.");
+				AddLog("ERROR", "Création de ticket impossible, l'utilisateur sélectionné ne figure plus dans la BD");
 				return;
 			}
 
@@ -259,6 +280,7 @@ public static class DbToolBox
 
 			db.Tickets.Add(ticket);
 			db.SaveChanges();
+			AddLog("INFO", $"Ticket créé : #{ticket.IdTicket} {subject}");
 		}
 	}
 
@@ -299,6 +321,7 @@ public static class DbToolBox
 		{
 			db.Tickets.Remove(SelectedTicket);
 			db.SaveChanges();
+			AddLog("WARNING", $"Ticket supprimé : #{SelectedTicket.IdTicket} {SelectedTicket.Subject}");
 		}
 	}
 
@@ -308,6 +331,7 @@ public static class DbToolBox
 		{
 			db.Users.Remove(SelectedUser);
 			db.SaveChanges();
+			AddLog("WARNING", $"Utilisateur supprimé : {SelectedUser.Email}");
 		}
 	}
 
@@ -317,6 +341,7 @@ public static class DbToolBox
 		{
 			db.Equipments.Remove(SelectedEquipment);
 			db.SaveChanges();
+			AddLog("WARNING", $"Équipement supprimé : {SelectedEquipment.IdGsb} ({SelectedEquipment.Brand} {SelectedEquipment.Model})");
 		}
 	}
 
@@ -433,6 +458,7 @@ public static class DbToolBox
 			}
 
 			context.SaveChanges();
+			AddLog("INFO", $"Équipement modifié : {idGsb} ({brand} {model})");
 
 		}}
 
@@ -491,6 +517,7 @@ public static class DbToolBox
 			ticket.InterventionLevel = SelectedLevel;
 
 			context.SaveChanges();
+			AddLog("INFO", $"Ticket modifié : #{ticket.IdTicket} {subject}, état {SelectedState}");
 		}
 	}
 
