@@ -116,7 +116,7 @@
                 <StackPanel>
                     <TextBlock Classes="heading" Text="Objectifs &amp; Stack Technique"/>
                     <TextBlock Classes="body"
-                               Text="Développée avec C# et Avalonia UI selon l'architecture MVVM, l'application s'appuie sur une base de données MySQL pour assurer le suivi précis des tickets selon le niveau d'habilitation des techniciens et des responsables."/>
+                               Text="Développée avec C# et Avalonia UI selon l'architecture MVVM, l'application s'appuie sur une base de données PostreSQL pour assurer le suivi précis des tickets selon le niveau d'habilitation des techniciens et des responsables."/>
                 </StackPanel>
 
                 <StackPanel>
