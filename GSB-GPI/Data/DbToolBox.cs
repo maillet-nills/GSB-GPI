@@ -174,6 +174,13 @@ public static class DbToolBox
 			return context.Users.ToList();
 		}
 	}
+	
+	public static User? GetUserById(int? id)
+	{
+		if (id == null) return null;
+		using var context = new GsbGPIDbContext(); 
+		return context.Users.FirstOrDefault(u => u.IdUser == id);
+	}
 
 	public static List<Technician> getAllTechnicians()
 	{
@@ -182,6 +189,13 @@ public static class DbToolBox
 			return context.Technicians.ToList();
 		}
 	}
+	
+	public static Technician? GetTechnicianById(int? id)
+    {
+        if (id == null) return null;
+        using var context = new GsbGPIDbContext();
+        return context.Technicians.FirstOrDefault(t => t.IdUser == id);
+    }
 
 	//Equipments methods
 
@@ -266,6 +280,13 @@ public static class DbToolBox
 
 			return EquipmentsLoaded;
 		}
+	}
+	
+	public static Equipment? GetEquipmentById(int? id)
+	{
+		if (id == null) return null;
+		using var context = new GsbGPIDbContext();
+		return context.Equipments.FirstOrDefault(e => e.Id == id);
 	}
 
 	//Ticket methods

@@ -42,9 +42,9 @@ public partial class TicketItemViewModel : ViewModelBase
 		    Console.WriteLine(_ticketToEdit.Technician == null);
 		    Console.WriteLine(_ticketToEdit.Equipment == null);
 		    Console.WriteLine(UsersList.Count);
-		    SelectedUser = UsersList.FirstOrDefault(u => u.IdUser == _ticketToEdit.User?.IdUser);
-		    SelectedTechnician = TechniciansList.FirstOrDefault(t => t.IdUser == _ticketToEdit.Technician?.IdUser);
-		    SelectedEquipment = EquipmentsList.FirstOrDefault(e => e.Id == _ticketToEdit.Equipment?.Id);
+		    SelectedUser = DbToolBox.GetUserById(_ticketToEdit.User?.IdUser);
+		    SelectedTechnician = DbToolBox.GetTechnicianById(_ticketToEdit.Technician?.IdUser);
+		    SelectedEquipment = DbToolBox.GetEquipmentById(_ticketToEdit.Equipment?.Id);
 		    Subject = _ticketToEdit.Subject;
 		    SelectedUrgency = _ticketToEdit.NvUrgency;
 		    SelectedState = _ticketToEdit.State;
