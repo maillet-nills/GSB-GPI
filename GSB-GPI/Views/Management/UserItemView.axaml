@@ -127,7 +127,7 @@
                     </StackPanel>
                 </Grid>
 
-                <TextBlock Grid.Row="5"
+                <TextBlock Grid.Row="6"
                            Text="{Binding ErrorMessage}"
                            IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
                            Foreground="#E81733"
