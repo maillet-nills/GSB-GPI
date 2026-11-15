@@ -22,6 +22,12 @@ public partial class RegisterViewModel : ViewModelBase
     private string _email = string.Empty;
 
     [ObservableProperty]
+    private string _phonenumber = string.Empty;
+
+    [ObservableProperty]
+    private string _registrationnumber = string.Empty;
+
+    [ObservableProperty]
     private string? _selectedRole;
 
     [ObservableProperty]
@@ -45,7 +51,7 @@ public partial class RegisterViewModel : ViewModelBase
     private void Register()
     {
 
-		    if (DbToolBox.Register(LastName, FirstName, Email, Password, ConfirmPassword, SelectedRole))
+		    if (DbToolBox.Register(LastName, FirstName, Email, Password, ConfirmPassword, SelectedRole, Phonenumber, Registrationnumber))
 		    {
 			    Console.WriteLine("Successfully registered!");
 			    LoginRequested?.Invoke();

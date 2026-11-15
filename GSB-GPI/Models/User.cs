@@ -25,7 +25,7 @@ public class User
     public string? Register { get; set; }
 
     [Column("hiring_date")]
-    public DateTime ?HiringDate { get; set; }
+    public DateTime? HiringDate { get; set; }
 
     [Column("regions")]
     public List<String>? Regions { get; set; } = new();
@@ -37,14 +37,19 @@ public class User
     public string HashedPassword { get; set; }
 
     [Column("is_supervisor")]
-    public bool ?IsSupervisor { get; set; }
+    public bool? IsSupervisor { get; set; }
 
     [Column("role")]
-    public string Role { get; set; }
+    public string? Role { get; set; }
+
+    [Column("phone_number")]
+    public string? PhoneNumber { get; set; }
+
+
 
     public User(){}
 
-    public User(int idUser, string lastName, string firstName, string address, string register, DateTime hiringDate, List<string> regions,string email, string hashedPassword, bool isSupervisor,string role)
+    public User(int idUser, string lastName, string firstName, string address, string register, DateTime hiringDate, List<string> regions,string email, string hashedPassword, bool isSupervisor,string role, string phonenumber)
     {
         IdUser = idUser;
         LastName = lastName;
@@ -56,6 +61,7 @@ public class User
         Email = email;
         HashedPassword = hashedPassword;
         IsSupervisor = isSupervisor;
+        PhoneNumber = phonenumber;
         Role = role;
     }
 

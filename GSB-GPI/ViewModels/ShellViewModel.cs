@@ -81,25 +81,26 @@ public partial class ShellViewModel : ViewModelBase
         ticketViewModel.EditRequested += ShowTicketItem;
         CurrentPage = ticketViewModel;
     }
-    
+
     private void ShowTicketItem(Ticket? ticket = null)
     {
         TicketItemViewModel ticketItemViewModel = new TicketItemViewModel(ticket);
         ticketItemViewModel.Closed += ShowTicket;
         CurrentPage = ticketItemViewModel;
     }
-    
+
     [RelayCommand]
     private void ShowUsers()
     {
         UserManagementViewModel userManagementViewModel = new UserManagementViewModel();
-        userManagementViewModel.CreateRequested += ShowUserItem;
+        userManagementViewModel.CreateRequested += () => ShowUserItem();
+        userManagementViewModel.EditRequested += ShowUserItem;
         CurrentPage = userManagementViewModel;
     }
 
-    private void ShowUserItem()
+    private void ShowUserItem(User? user = null)
     {
-        UserItemViewModel userItemViewModel = new UserItemViewModel();
+        UserItemViewModel userItemViewModel = new UserItemViewModel(user);
         userItemViewModel.Closed += ShowUsers;
         CurrentPage = userItemViewModel;
     }

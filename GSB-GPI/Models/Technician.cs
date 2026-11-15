@@ -18,7 +18,7 @@ public class Technician : User
 
     public Technician(){}
 
-    public Technician(int idUser, string lastName, string firstName, string address, string register, DateTime hiringDate, List<string> regions,string email, string hashedPassword, bool isSupervisor, Level interventionLevel, string formation, List<string> skills, string role) : base(idUser, lastName, firstName, address, register, hiringDate, regions, email, hashedPassword, isSupervisor,role)
+    public Technician(int idUser, string lastName, string firstName, string address, string register, DateTime hiringDate, List<string> regions,string email, string hashedPassword, bool isSupervisor, Level interventionLevel, string formation, List<string> skills, string role, string phonenumber) : base(idUser, lastName, firstName, address, register, hiringDate, regions, email, hashedPassword, isSupervisor,role,phonenumber)
     {
         InterventionLevel = interventionLevel;
         Formation = formation;

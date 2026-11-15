@@ -30,8 +30,8 @@
                     <Border Background="White" CornerRadius="8" Padding="14">
                         <Grid ColumnDefinitions="*, Auto">
                             <StackPanel Grid.Column="0" Spacing="2">
-                                <TextBlock Text="Total matériels :" Foreground="#6B6B6B" FontSize="12"/>
-                                <TextBlock Text="{Binding TotalEquipments}"
+                                <TextBlock Text="Total Users :" Foreground="#6B6B6B" FontSize="12"/>
+                                <TextBlock Text="{Binding TotalUsers}"
                                            Foreground="#1F1F1F"
                                            FontSize="36"
                                            FontWeight="Bold"/>
@@ -49,8 +49,8 @@
                     <Border Background="White" CornerRadius="8" Padding="14">
                         <Grid ColumnDefinitions="*, Auto">
                             <StackPanel Grid.Column="0" Spacing="2">
-                                <TextBlock Text="Total tickets :" Foreground="#6B6B6B" FontSize="12"/>
-                                <TextBlock Text="{Binding TotalTickets}"
+                                <TextBlock Text="Total Techniciens :" Foreground="#6B6B6B" FontSize="12"/>
+                                <TextBlock Text="{Binding TotalTechnicians}"
                                            Foreground="#1F1F1F"
                                            FontSize="36"
                                            FontWeight="Bold"/>

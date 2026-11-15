@@ -13,6 +13,7 @@ namespace GSB_GPI.ViewModels;
 public partial class UserManagementViewModel : ViewModelBase
 {
     public event Action? CreateRequested;
+    public event Action<User>? EditRequested;
 
     public ObservableCollection<User> Items { get; set; } = new();
 
@@ -21,8 +22,7 @@ public partial class UserManagementViewModel : ViewModelBase
     [ObservableProperty] private string _selectedRole = "Tous";
     [ObservableProperty] private string _errorMessage = string.Empty;
 
-    public IEnumerable<User> FilteredItems =>
-        SelectedRole == "Tous" ? Items : Items.Where(u => u.Role.Contains(SelectedRole));
+    public IEnumerable<User> FilteredItems => DbToolBox.GetFilteredUsers(SelectedRole);
 
     public bool IsEmpty => !FilteredItems.Any();
 
@@ -48,6 +48,12 @@ public partial class UserManagementViewModel : ViewModelBase
     private void Create()
     {
         CreateRequested?.Invoke();
+    }
+
+    [RelayCommand]
+    private void Edit(User? user)
+    {
+	    EditRequested?.Invoke(user);
     }
 
     [RelayCommand]
@@ -78,4 +84,6 @@ public partial class UserManagementViewModel : ViewModelBase
         Refresh();
         Console.WriteLine($"User {user.IdUser} deleted successfully.");
     }
+
+
 }

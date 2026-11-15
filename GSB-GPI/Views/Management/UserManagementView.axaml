@@ -1,4 +1,4 @@
-﻿<UserControl xmlns="https://github.com/avaloniaui"
+﻿ <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -39,6 +39,15 @@
             <Setter Property="Background" Value="#A90F24"/>
             <Setter Property="Foreground" Value="White"/>
         </Style>
+	    <Style Selector="Button.modify">
+		    <Setter Property="Background" Value="#2A7EF5"/>
+		    <Setter Property="Foreground" Value="White"/>
+		    <Setter Property="FontWeight" Value="SemiBold"/>
+		    <Setter Property="Padding" Value="16,6"/>
+		    <Setter Property="CornerRadius" Value="6"/>
+	    </Style>
+
+
     </UserControl.Styles>
 
     <DockPanel Margin="40,36">
@@ -94,12 +103,14 @@
                     <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="2*"/>
                     <DataGridTextColumn Header="Rôle" Binding="{Binding Role}"/>
                     <DataGridTemplateColumn Header="">
-                        <DataTemplate>
-                            <Button Classes="delete"
-                                    Content="Supprimer"
-                                    Command="{Binding $parent[DataGrid].DataContext.DeleteCommand}"
-                                    CommandParameter="{Binding}"/>
-                        </DataTemplate>
+	                    <DataTemplate>
+		                    <StackPanel Orientation="Horizontal" Spacing="6">
+			                    <Button Classes="modify"
+			                            Content="Modifier"
+			                            Command="{Binding $parent[DataGrid].DataContext.EditCommand}"
+			                            CommandParameter="{Binding}"/>
+		                    </StackPanel>
+	                    </DataTemplate>
                     </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>

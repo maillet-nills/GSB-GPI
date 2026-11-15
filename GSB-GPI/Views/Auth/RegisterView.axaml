@@ -176,7 +176,6 @@
                         CornerRadius="8">
                     <StackPanel Spacing="14">
 
-                        <!-- Nom et Prénom côte à côte -->
                         <Grid ColumnDefinitions="*,12,*">
                             <StackPanel Grid.Column="0">
                                 <TextBlock Classes="label" Text="Nom"/>
@@ -196,8 +195,24 @@
                         <StackPanel>
                             <TextBlock Classes="label" Text="Email"/>
                             <TextBox Classes="field"
-                                     Watermark="Entrez votre adresse mail"
+                                     Watermark="Votre email"
                                      Text="{Binding Email}"/>
+                        </StackPanel>
+
+                        <StackPanel Spacing="14">
+	                        <StackPanel>
+		                        <TextBlock Classes="label" Text="Numéro de téléphone"/>
+		                        <TextBox Classes="field"
+		                                 Watermark="Votre numéro"
+		                                 Text="{Binding Phonenumber}"/>
+	                        </StackPanel>
+
+	                        <StackPanel>
+		                        <TextBlock Classes="label" Text="Matricule"/>
+		                        <TextBox Classes="field"
+		                                 Watermark="Votre matricule"
+		                                 Text="{Binding Registrationnumber}"/>
+	                        </StackPanel>
                         </StackPanel>
 
                         <StackPanel>

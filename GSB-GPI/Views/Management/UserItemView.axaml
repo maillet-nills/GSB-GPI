@@ -47,6 +47,21 @@
             <Setter Property="Height" Value="32"/>
             <Setter Property="MinHeight" Value="32"/>
         </Style>
+	    <Style Selector="Button.delete">
+		    <Setter Property="Background" Value="#E81733"/>
+		    <Setter Property="Foreground" Value="White"/>
+		    <Setter Property="FontWeight" Value="SemiBold"/>
+		    <Setter Property="Padding" Value="16,6"/>
+		    <Setter Property="CornerRadius" Value="6"/>
+	    </Style>
+	    <Style Selector="Button.delete:pointerover /template/ ContentPresenter">
+		    <Setter Property="Background" Value="#C9132C"/>
+		    <Setter Property="Foreground" Value="White"/>
+	    </Style>
+	    <Style Selector="Button.delete:pressed /template/ ContentPresenter">
+		    <Setter Property="Background" Value="#A90F24"/>
+		    <Setter Property="Foreground" Value="White"/>
+	    </Style>
     </UserControl.Styles>
 
     <Grid Margin="24" RowDefinitions="Auto, Auto, *, Auto" RowSpacing="16">
@@ -59,7 +74,7 @@
         <Separator Grid.Row="1" Background="#E0E0E0" Margin="0,2"/>
 
         <Border Grid.Row="2" Background="#F9FAFB" CornerRadius="8" Padding="16" VerticalAlignment="Top">
-            <Grid RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto" RowSpacing="10">
+            <Grid RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto,Auto,Auto" RowSpacing="10">
                 <TextBlock Grid.Row="0" Text="Informations du compte" FontWeight="Bold" Foreground="#1F1F1F" FontSize="15"/>
 
                 <Grid Grid.Row="1" ColumnDefinitions="*, *" ColumnSpacing="12">
@@ -85,7 +100,23 @@
                               HorizontalAlignment="Stretch"/>
                 </StackPanel>
 
-                <Grid Grid.Row="4" ColumnDefinitions="*, *" ColumnSpacing="12">
+                <StackPanel  Grid.Row="4"  Spacing="14">
+	                <StackPanel>
+		                <TextBlock Classes="label" Text="Numéro de téléphone"/>
+		                <TextBox Classes="field"
+		                         Watermark="Votre numéro"
+		                         Text="{Binding Phonenumber}"/>
+	                </StackPanel>
+
+	                <StackPanel>
+		                <TextBlock Classes="label" Text="Matricule"/>
+		                <TextBox Classes="field"
+		                         Watermark="Votre matricule"
+		                         Text="{Binding Registernumber}"/>
+	                </StackPanel>
+                </StackPanel>
+
+                <Grid Grid.Row="5" ColumnDefinitions="*, *" ColumnSpacing="12">
                     <StackPanel Grid.Column="0" Spacing="2">
                         <TextBlock Text="Mot de passe" Foreground="#6B6B6B" FontSize="12"/>
                         <TextBox Text="{Binding Password}" PasswordChar="●" Watermark="Mot de passe"/>
@@ -105,8 +136,10 @@
         </Border>
 
         <StackPanel Grid.Row="3" Orientation="Horizontal" Spacing="12" HorizontalAlignment="Right">
-            <Button Classes="cancel" Content="Annuler" Command="{Binding CancelCommand}"/>
-            <Button Classes="add" Content="Créer" Command="{Binding SaveCommand}"/>
+	        <Button Classes="delete" Content="Supprimer" Command="{Binding DeleteCommand}"/>
+	        <Button Classes="cancel" Content="Annuler" Command="{Binding CancelCommand}"/>
+            <Button Classes="add" Content="Save" Command="{Binding SaveCommand}"/>
+
         </StackPanel>
     </Grid>
 </UserControl>

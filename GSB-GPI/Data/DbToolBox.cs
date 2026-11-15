@@ -47,7 +47,7 @@ public static class DbToolBox
 	}
 
 	//Register & Login methods
-	public static bool Register(string lastName, string firstName, string email, string password, string confirmPassword, string role)
+	public static bool Register(string lastName, string firstName, string email, string password, string confirmPassword, string role,string phonenumber, string register)
 	{
 		using (var context = new GsbGPIDbContext())
 		{
@@ -95,7 +95,10 @@ public static class DbToolBox
 					Role = role,
 					InterventionLevel = interventionLevel.Value,
 					LastName = lastName,
-					FirstName = firstName
+					FirstName = firstName,
+					PhoneNumber = phonenumber,
+					Register = register,
+
 
 				};
 				context.Users.Add(newTechnician);
@@ -110,6 +113,8 @@ public static class DbToolBox
 					Role = role,
 					LastName = lastName,
 					FirstName = firstName,
+					PhoneNumber = phonenumber,
+					Register = register,
 
 				};
 				context.Users.Add(newUser);
@@ -238,7 +243,7 @@ public static class DbToolBox
 		}
 	}
 
-	//Equipment select
+	//Equipment select (Only avaible for technicians and admin)
 	public static List<Equipment> LoadEquipments()
 	{
 		var EquipmentsLoaded = new List<Equipment>();
@@ -277,7 +282,7 @@ public static class DbToolBox
 
 			if (existingUser == null )
 			{
-				//Ajout d'une MessageBox bientot (normalement ce if devrait jamais arrivé c'est quasi impossible mais vaut mieut prévenir que guérir.)
+				//Ajout d'une MessageBox bientot (normalement ce if devrait jamais arrivé c'est quasi impossible mais vaut mieux prévenir que guérir.)
 
 				AddLog("ERROR", "Création de ticket impossible, l'utilisateur sélectionné ne figure plus dans la BD");
 				return;
@@ -370,61 +375,41 @@ public static class DbToolBox
 
 	//Edit Methods------
 
-	//Equipment---
+	//User---
 
-	//Load--
-	public static void LoadEditEquipmentForm(
-		Equipment selectedEquipment,
-		ref string idGsb,
-		ref string brand,
-		ref string model,
-		ref bool rental,
-		ref bool guarantee,
-		ref string provider,
-		ref User userSelected,
+	//Edit
 
-		//Child class atributes
-		ref string? netType,
-		ref string? version,
-		ref string? processor,
-		ref long? ram,
-		ref int? diskVolumeInt,
-		ref string? diskVolumeString,
-		ref string? os)
+	public static bool UpdateUser(User SelectedUser, string LastName, string FirstName, string Email, string Password,
+		string SelectedRole, string Phonenumber, string Registernumber)
 	{
-		if (selectedEquipment == null) return;
-
-		idGsb = selectedEquipment.IdGsb;
-		brand = selectedEquipment.Brand;
-		model = selectedEquipment.Model;
-		rental = selectedEquipment.Rental;
-		guarantee = selectedEquipment.Guarantee;
-		provider = selectedEquipment.Provider;
-		userSelected = selectedEquipment.User;
-
-		switch (selectedEquipment)
+		using (var context = new GsbGPIDbContext())
 		{
-			case Server server:
-				version = server.Version;
-				processor = server.Processor;
-				ram = server.Ram;
-				diskVolumeInt = server.DiskVolume;
-				break;
+			var userTarget = context.Users.FirstOrDefault(e => e.IdUser == SelectedUser.IdUser);
+			if (userTarget == null)
+			{
+				Console.WriteLine("Tentative de modification échoué.");
+				return false;
+			}
 
-			case Workstation workstation:
-				processor = workstation.Processor;
-				os = workstation.Os;
-				ram = workstation.Ram;
-				diskVolumeString = workstation.DiskVolume.ToString();
-				break;
+			userTarget.LastName = LastName;
+			userTarget.FirstName = FirstName;
+			userTarget.Email = Email;
+			userTarget.Role = SelectedRole;
+			userTarget.PhoneNumber = Phonenumber;
+			userTarget.Register =  Registernumber;
 
-			case NetEquipment netEquipment:
-				netType = netEquipment.Type;
-				break;
+			if (!string.IsNullOrWhiteSpace(Password))
+			{
+				userTarget.HashedPassword = BCrypt.Net.BCrypt.HashPassword(Password);
+			}
+
+			context.SaveChanges();
+
+			return true;
 		}
-
-
 	}
+
+	//Equipment---
 
 	//Edit--
 	public static void UpdateEquipment(
@@ -458,7 +443,7 @@ public static class DbToolBox
 
 			//save change si ancienne valeur (en base) est différente de la nouvelle
 			var changes = new List<string>();
-			
+
 			if (equipment.IdGsb != idGsb) changes.Add($"IdGsb : {equipment.IdGsb} -> {idGsb}");
 			if (equipment.Brand != brand) changes.Add($"Brand : {equipment.Brand} -> {brand}");
 			if (equipment.Model != model) changes.Add($"Model : {equipment.Model} -> {model}");
@@ -477,12 +462,12 @@ public static class DbToolBox
 			switch (equipment)
 			{
 				case Server server:
-					
+
 					if (server.Version != version) changes.Add($"Version : {server.Version} -> {version}");
 					if (server.Processor != processor) changes.Add($"Processor : {server.Processor} -> {processor}");
 					if (server.Ram != ram) changes.Add($"Ram : {server.Ram} -> {ram}");
 					if (server.DiskVolume != diskVolumeInt) changes.Add($"DiskVolume : {server.DiskVolume} -> {diskVolumeInt}");
-					
+
 					server.Version = version;
 					server.Processor = processor;
 					server.Ram = ram;
@@ -490,7 +475,7 @@ public static class DbToolBox
 					break;
 
 				case Workstation workstation:
-					
+
 					if (workstation.Processor != processor) changes.Add($"Processor : {workstation.Processor} -> {processor}");
 					if (workstation.Os != os) changes.Add($"Os : {workstation.Os} -> {os}");
 					if (workstation.Ram != ram) changes.Add($"Ram : {workstation.Ram} -> {ram}");
@@ -537,29 +522,6 @@ public static class DbToolBox
 
 	//Tickets---
 
-	//Load--
-
-	public static void LoadEditTicketForm(
-		Ticket selectedTicket,
-		ref string subject,
-		ref Equipment? Selectedequipment,
-		ref User? Selecteduser,
-		ref Technician? SelectedTechnician,
-		ref Urgency SelectedUrgency,
-		ref State SelectedState,
-		ref Level SelectedLevel)
-	{
-		if (selectedTicket == null) return;
-
-		subject = selectedTicket.Subject;
-		Selectedequipment = selectedTicket.Equipment;
-		Selecteduser = selectedTicket.User;
-		SelectedTechnician = selectedTicket.Technician;
-		SelectedUrgency = selectedTicket.NvUrgency;
-		SelectedState = selectedTicket.State;
-		SelectedLevel = selectedTicket.InterventionLevel;
-	}
-
 	//Edit--
 
 	public static void UpdateTicket(
@@ -595,7 +557,7 @@ public static class DbToolBox
 
 			//save change si ancienne valeur différente de la nouvelle
 			var changes = new List<string>();
-			
+
 			if (ticket.Subject != subject) changes.Add($"Subject : {ticket.Subject} -> {subject}");
 			if (ticket.NvUrgency != SelectedUrgency) changes.Add($"NvUrgency : {ticket.NvUrgency} -> {SelectedUrgency}");
 			if (ticket.State != SelectedState) changes.Add($"State : {ticket.State} -> {SelectedState}");
@@ -660,6 +622,63 @@ public static class DbToolBox
 		else
 		{
 			return false;
+		}
+	}
+
+
+	//Return recent tickets depending on the selected state
+	public static List<Ticket> RecentTickets(string state)
+	{
+		using (var context = new GsbGPIDbContext())
+		{
+			if (string.IsNullOrEmpty(state) || state == "Tous")
+			{
+				return context.Tickets
+					.OrderByDescending(t => t.Timestamp)
+					.Take(10)
+					.ToList();
+			}
+
+			return context.Tickets
+				.Where(t => t.State.ToString() == state)
+				.OrderByDescending(t => t.Timestamp)
+				.Take(10)
+				.ToList();
+
+		}
+
+	}
+
+	//Return users depending on their role
+
+	public static List<User> GetFilteredUsers(string role)
+	{
+		using(var context = new GsbGPIDbContext())
+		{
+			if (string.IsNullOrEmpty(role) || role == "Tous")
+			{
+				return context.Users.ToList();
+			}
+			return context.Users.Where(u => u.Role.Contains(role)).ToList();
+
+		}
+
+	}
+
+	//Return number of Technicians & Register
+	public static int NumberOfTech()
+	{
+		using(var context = new GsbGPIDbContext())
+		{
+			return context.Technicians.Count();
+		}
+	}
+
+	public static int NumberOfUser()
+	{
+		using (var context = new GsbGPIDbContext())
+		{
+			return context.Users.Count();
 		}
 	}
 

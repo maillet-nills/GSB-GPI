@@ -14,19 +14,15 @@ public partial class DashboardViewModel : ViewModelBase
 {
     private readonly List<Ticket> _tickets;
 
-    public int TotalEquipments { get; }
-    public int TotalTickets { get; }
-    public ParkItem[] ParkItems { get; }
+    public int TotalUsers { get; set; }
+    public int TotalTechnicians { get; set; }
+    public ParkItem[] ParkItems { get; set; }
 
     public string[] States { get; } = new[] { "Tous" }.Concat(Enum.GetNames<State>()).ToArray();
 
     [ObservableProperty] private string _selectedState = "Tous";
 
-    public IEnumerable<Ticket> RecentTickets =>
-        _tickets
-            .Where(t => SelectedState == "Tous" || t.State.ToString() == SelectedState)
-            .OrderByDescending(t => t.Timestamp)
-            .Take(10);
+    public IEnumerable<Ticket> RecentTickets => DbToolBox.RecentTickets(SelectedState);
 
     partial void OnSelectedStateChanged(string value) => OnPropertyChanged(nameof(RecentTickets));
 
@@ -35,8 +31,8 @@ public partial class DashboardViewModel : ViewModelBase
         var equipments = DbToolBox.LoadEquipments().ToList();
         _tickets = DbToolBox.LoadTickets();
 
-        TotalEquipments = equipments.Count;
-        TotalTickets = _tickets.Count;
+        TotalUsers = DbToolBox.NumberOfUser();
+        TotalTechnicians = DbToolBox.NumberOfTech();
 
         int total = Math.Max(1, equipments.Count);
 
